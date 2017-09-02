@@ -71,12 +71,18 @@
 }
 
 - (void)update:(CFTimeInterval)currentTime {
+    
+    static NSTimeInterval lastCreateTime = 0;
+    NSTimeInterval now = [[NSDate  date]timeIntervalSince1970];
+    if (now - lastCreateTime < 2)
+        return;
     // Called before each frame is rendered
     int shouldCreateCount = MAX_KOF_COUNT - currentRemainAnchorCount_ - successedAnchorCount_;
     for (int i=0; i<shouldCreateCount; i++){
         [self createNodeAnchor];
         [self setNodeNumer:nodeNumber_+1];
     }
+    lastCreateTime = now;
 }
 
 float randomFloat(float min, float max) {
@@ -113,7 +119,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
     // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
     simd_float4x4 translation = matrix_identity_float4x4;
-    translation.columns[3].z = -1 - randomFloat(0.0, 1.0);
+    translation.columns[3].z = -0.5 - randomFloat(0.0, 1.0);
     
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
