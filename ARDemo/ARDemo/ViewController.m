@@ -29,20 +29,35 @@
     self.sceneView.showsNodeCount = YES;
     
     // Load the SKScene from 'Scene.sks'
-    Scene *scene = (Scene *)[SKScene nodeWithFileNamed:@"Scene"];
-    
+    Scene* scene = (Scene *)[Scene sceneWithSize:self.sceneView.bounds.size];
     // Present the scene
     [self.sceneView presentScene:scene];
+}
+
+- (void) resetTrack{
+    if (ARWorldTrackingConfiguration.isSupported) {
+        ARWorldTrackingConfiguration*  configuration = [[[ARWorldTrackingConfiguration alloc] init] autorelease];
+        //configuration.planeDetection = .horizontal
+        [self.sceneView.session runWithConfiguration:configuration options:0];
+    }
+    else{
+        AROrientationTrackingConfiguration* configuration = [[[AROrientationTrackingConfiguration alloc] init] autorelease];
+        [self.sceneView.session runWithConfiguration:configuration options:0];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Create a session configuration
-    ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
-
-    // Run the view's session
-    [self.sceneView.session runWithConfiguration:configuration];
+    /*
+     // Create a session configuration
+     ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
+     
+     // Run the view's session
+     [self.sceneView.session runWithConfiguration:configuration];
+     */
+    
+    [self resetTrack];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -61,7 +76,7 @@
 
 - (SKNode *)view:(ARSKView *)view nodeForAnchor:(ARAnchor *)anchor {
     // Create and configure a node for the anchor added to the view's session.
-    SKLabelNode *labelNode = [SKLabelNode labelNodeWithText:@"👾"];
+    SKLabelNode *labelNode = [SKLabelNode labelNodeWithText:@"😂"];
     labelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
     labelNode.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
     return labelNode;
@@ -74,11 +89,12 @@
 
 - (void)sessionWasInterrupted:(ARSession *)session {
     // Inform the user that the session has been interrupted, for example, by presenting an overlay
-    
+    [self resetTrack];
 }
 
 - (void)sessionInterruptionEnded:(ARSession *)session {
     // Reset tracking and/or remove existing anchors if consistent tracking is required
+    [self resetTrack];
     
 }
 

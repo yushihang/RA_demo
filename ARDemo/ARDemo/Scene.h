@@ -9,6 +9,6 @@
 #import <SpriteKit/SpriteKit.h>
 #import <ARKit/ARKit.h>
 
-@interface Scene : SKScene
+@interface Scene : SKScene<ARSessionDelegate>
 
 @end
