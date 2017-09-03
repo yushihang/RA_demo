@@ -15,7 +15,7 @@
 
 #define RESET_BUTTON_NAME @"resetButton"
 #define MY_NODE_NAME @"MY_NODE_NAME"
-
+#define GUESS_Z_POS (100)
 
 @interface NSMutableArray (my_Shuffling)
 - (void)myshuffle;
@@ -43,14 +43,22 @@
 {
     SKLabelNode* noticelabel_;
     SKLabelNode* numberLabel_;
+    
+    SKLabelNode* foundNoticeLabel_;
+    SKLabelNode* foundNumberLabel_;
+    
     int nodeNumber_;
     //int currentRemainAnchorCount_;
     int successedAnchorCount_;
     SKSpriteNode* resetButton_;
-    NSMutableDictionary<NSString*, SKNode* >* anchorNodeDict_;
+    NSMutableDictionary<NSNumber*, ARAnchor* >* nodeTypeAnchorDict_;
     NSMutableArray<NSNumber*>* nodeTypeArray_;
     
     std::unordered_map<int, std::pair<std::string, int>> gifDataMap_;
+    
+    SKSpriteNode* distanceNotifyNode_;
+    
+    BOOL guessMode_;
 }
 @end
 
@@ -72,7 +80,20 @@
         numberLabel_.fontSize = noticelabel_.fontSize;
         numberLabel_.fontName = noticelabel_.fontName;
         numberLabel_.fontColor = noticelabel_.fontColor;
-        numberLabel_.position = CGPointMake(noticelabel_.frame.size.width + 10 + numberLabel_.frame.size.width*0.5, noticelabel_.position.y);
+        
+        
+        foundNoticeLabel_ = [[SKLabelNode labelNodeWithText:@"已找到:"] retain];
+        foundNoticeLabel_.fontSize = noticelabel_.fontSize;
+        foundNoticeLabel_.fontName =  noticelabel_.fontName;
+        foundNoticeLabel_.fontColor = noticelabel_.fontColor;
+
+        
+        
+        foundNumberLabel_ = [[SKLabelNode labelNodeWithText:@"0"] retain];
+        foundNumberLabel_.fontSize = noticelabel_.fontSize;
+        foundNumberLabel_.fontName =  noticelabel_.fontName;
+        foundNumberLabel_.fontColor = noticelabel_.fontColor;
+  
         
         resetButton_ = [[SKSpriteNode alloc] initWithImageNamed:@"reset.png"];
         resetButton_.size = CGSizeMake(40, 40);
@@ -82,15 +103,20 @@
         
         [self setNodeNumer:0];
         //currentRemainAnchorCount_ = 0;
-        successedAnchorCount_ = 0;
+        [self setSuccessNodeNumer:0];
         
-        anchorNodeDict_ = [[NSMutableDictionary alloc]initWithCapacity:3];
+        nodeTypeAnchorDict_ = [[NSMutableDictionary alloc]initWithCapacity:MAX_NODE_COUNT];
         
-        nodeTypeArray_ = [[NSMutableArray alloc]initWithCapacity:3];
+        nodeTypeArray_ = [[NSMutableArray alloc]initWithCapacity:MAX_NODE_COUNT];
         
         [self resetNodeTypeArray];
+        [self initGifDataMap];
         
+        distanceNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"distance_notify.png"];
+        distanceNotifyNode_.xScale = distanceNotifyNode_.yScale = [UIScreen mainScreen].bounds.size.height * 0.1 / distanceNotifyNode_.size.height ;
+        distanceNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - distanceNotifyNode_.frame.size.height*0.75);
         
+        guessMode_ = NO;
         
     }
     return self;
@@ -99,12 +125,12 @@
 
 -(void)initGifDataMap
 {
-    gifDataMap_[0] = std::pair<std::string, int>("东丈", 12);
-    gifDataMap_[1] = std::pair<std::string, int>("吉斯", 6);
-    gifDataMap_[2] = std::pair<std::string, int>("坂崎良", 6);
-    gifDataMap_[3] = std::pair<std::string, int>("安迪", 13);
-    gifDataMap_[4] = std::pair<std::string, int>("特瑞", 18);
-    gifDataMap_[5] = std::pair<std::string, int>("雅典娜", 16);
+    gifDataMap_[0] = std::pair<std::string, int>("dz", 12);
+    gifDataMap_[1] = std::pair<std::string, int>("js", 6);
+    gifDataMap_[2] = std::pair<std::string, int>("bql", 6);
+    gifDataMap_[3] = std::pair<std::string, int>("ad", 13);
+    gifDataMap_[4] = std::pair<std::string, int>("tr", 18);
+    gifDataMap_[5] = std::pair<std::string, int>("ydn", 16);
 }
 -(void)resetNodeTypeArray
 {
@@ -115,17 +141,20 @@
     
 }
 
--(SKSpriteNode*) generateSKSpriteNode
+-(SKNode*) generateSKSpriteNode:(int)gifIndex_orig
 {
-    int gifIndex = arc4random() % 6;
-    if (nodeTypeArray_.count > 0)
+    int gifIndex = gifIndex_orig;
+    if (gifIndex == -1)
     {
-        gifIndex = [nodeTypeArray_ lastObject].intValue;
-        [nodeTypeArray_ removeLastObject];
-        if (gifIndex >= 6)
-            gifIndex = arc4random() % 6;
+        if (nodeTypeArray_.count > 0)
+        {
+            gifIndex = [nodeTypeArray_ lastObject].intValue;
+            [nodeTypeArray_ removeLastObject];
+            
+        }
     }
-    
+    if (gifIndex >= 6 || gifIndex < 0)
+        gifIndex = arc4random() % 6;
     auto& pair = gifDataMap_[gifIndex];
     
     
@@ -139,17 +168,37 @@
     
     SKSpriteNode* node = [SKSpriteNode spriteNodeWithImageNamed:[NSString stringWithFormat:@"%s-1 (dragged).tiff", pair.first.c_str()]];
     
-    SKAction* animation = [SKAction animateWithTextures:frames timePerFrame:0.2];
+    SKAction* animation = [SKAction animateWithTextures:frames timePerFrame:0.08];
     // Change the frame per 0.2 sec
     [node runAction:[SKAction repeatActionForever:animation]];
+    //node.xScale = node.yScale = 0.5;
+    //SKNode* nodeP = [SKNode node];
+    //[nodeP addChild:node];
+    
+    node.name = [NSString stringWithFormat:@"%@%d", MY_NODE_NAME, gifIndex];
+    
+    //if (gifIndex_orig == -1)
+    {
+        node.color = [SKColor blackColor];
+        
+        node.colorBlendFactor = 1.0f;
+    }
     
     return node;
 }
 
+-(int)getGifIndexByNodeName:(NSString*)name
+{
+    NSAssert([name hasPrefix:MY_NODE_NAME], @"getGifIndexByNodeName data error");
+    NSString* string = [name substringFromIndex:MY_NODE_NAME.length];
+    int gifIndex = string.intValue;
+    return gifIndex;
+}
 - (SKNode *)view:(ARSKView *)view nodeForAnchor:(ARAnchor *)anchor {
     // Create and configure a node for the anchor added to the view's session.
-    SKSpriteNode* node = [self generateSKSpriteNode];
-    anchorNodeDict_[anchor.identifier.UUIDString] = node;
+    SKNode* node = [self generateSKSpriteNode:-1];
+    int gifIndex = [self getGifIndexByNodeName:node.name];
+    nodeTypeAnchorDict_[@(gifIndex)] = anchor;
     return node;
 }
 
@@ -159,6 +208,8 @@
     [self addChild:noticelabel_];
     [self addChild:numberLabel_];
     [self addChild:resetButton_];
+    [self addChild:distanceNotifyNode_];
+    distanceNotifyNode_.alpha = 0;
     
     ARSKView* sceneView= (ARSKView*)self.view;
     if (![sceneView isKindOfClass:[ARSKView class]]){
@@ -171,8 +222,27 @@
 
 - (void)setNodeNumer:(int)number{
     nodeNumber_ = number;
-    numberLabel_.text = [NSString stringWithFormat:@"%d", number];
-    numberLabel_.position = CGPointMake(noticelabel_.frame.size.width + 10 + numberLabel_.frame.size.width*0.5, noticelabel_.position.y);
+    [self updateLabels];
+    
+}
+
+
+- (void)setSuccessNodeNumer:(int)number{
+    successedAnchorCount_ = number;
+    [self updateLabels];
+}
+
+-(void)updateLabels
+{
+    numberLabel_.text = [NSString stringWithFormat:@"%d", nodeNumber_];
+    foundNumberLabel_.text = [NSString stringWithFormat:@"%d", successedAnchorCount_];
+
+    numberLabel_.position = CGPointMake(noticelabel_.frame.size.width+noticelabel_.frame.origin.x + 10 + numberLabel_.frame.size.width*0.5, noticelabel_.position.y);
+    
+
+    foundNoticeLabel_.position = CGPointMake(numberLabel_.frame.size.width+numberLabel_.frame.origin.x + 10 + foundNoticeLabel_.frame.size.width*0.5, noticelabel_.position.y);
+    
+    foundNumberLabel_.position = CGPointMake(foundNoticeLabel_.frame.size.width+foundNoticeLabel_.frame.origin.x + 10 + foundNumberLabel_.frame.size.width*0.5, noticelabel_.position.y);
 }
 
 - (void)update:(CFTimeInterval)currentTime {
@@ -225,7 +295,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
     // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
     simd_float4x4 translation = matrix_identity_float4x4;
-    translation.columns[3].z = -1.0 - randomFloat(0.0, 1.0);
+    translation.columns[3].z = -2.5 - randomFloat(0.0, 1.0);
+    //translation.columns[3].z = -0.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
     
@@ -248,6 +319,9 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     if (hitNodes.count == 0)
         return;
     
+    if (guessMode_)
+        return;
+    
     SKNode* hitNode = hitNodes.firstObject;
     if (hitNode == nil)
         return;
@@ -260,14 +334,17 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
     if ([hitNode.name hasPrefix:MY_NODE_NAME])
     {
+        distanceNotifyNode_.alpha = 0;
+        [distanceNotifyNode_ removeAllActions];
         float currentlength = MAX(hitNode.frame.size.width, hitNode.frame.size.height);
         float screensize = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
         float rate = currentlength/ screensize;
-        if (rate < 0.33)
+        if (rate < 0.5)
         {
             [self showNotifyForDistance];
             return;
         }
+        [self touchSuccess:hitNode];
         return;
     }
     /*
@@ -295,14 +372,44 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     }
   */
 }
+
+-(void)touchSuccess:(SKNode*) hitNode
+{
+    guessMode_ = YES;
+    int gifIndex = [self getGifIndexByNodeName:hitNode.name];
+    
+    SKNode* newNode = [self generateSKSpriteNode:gifIndex];
+    newNode.position = hitNode.position;
+    newNode.yScale = hitNode.yScale;
+    newNode.xScale = hitNode.xScale;
+    newNode.zPosition = GUESS_Z_POS;
+    [self addChild:newNode];
+    
+    
+    ARAnchor* anchor = nodeTypeAnchorDict_[@(gifIndex)];
+    if (anchor != nil)
+    {
+        ARSKView* sceneView= (ARSKView*)self.view;
+        if (![sceneView isKindOfClass:[ARSKView class]]){
+            return;
+        }
+        
+        [sceneView.session removeAnchor:anchor];
+        [hitNode removeFromParent];
+        [nodeTypeAnchorDict_ removeObjectForKey:@(gifIndex)];
+        [self setNodeNumer:nodeNumber_-1];
+        [self setSuccessNodeNumer:successedAnchorCount_+1];
+
+    }
+    
+}
+
 - (void)showNotifyForDistance
 {
-    SKSpriteNode* node = [[[SKSpriteNode alloc]initWithImageNamed:@"distance_notify.png"] autorelease];
-    node.xScale = node.yScale = [UIScreen mainScreen].bounds.size.height * 0.1 / node.size.height ;
-    [self addChild:node];
-    node.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - node.frame.size.height*0.75);
-    NSArray* array = [NSArray arrayWithObjects:[SKAction waitForDuration:1],[SKAction fadeAlphaTo:0 duration:1], [SKAction removeFromParent], nil];
-    [node runAction:[SKAction sequence:array]];
+    [distanceNotifyNode_ removeAllActions];
+
+    NSArray* array = [NSArray arrayWithObjects:[SKAction fadeAlphaTo:1 duration:0.1], [SKAction waitForDuration:1],[SKAction fadeAlphaTo:0 duration:1], nil];
+    [distanceNotifyNode_ runAction:[SKAction sequence:array]];
 }
 - (void) resetTrack
 {
@@ -311,15 +418,11 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 - (void) resetCount
 {
     [self setNodeNumer:0];
-    [anchorNodeDict_ enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        SKNode* node = (SKNode*)obj;
-        if ([node isKindOfClass:[SKNode class]])
-            [node removeFromParent];
-    }];
-    [anchorNodeDict_ removeAllObjects];
+
+    [nodeTypeAnchorDict_ removeAllObjects];
     [self resetNodeTypeArray];
 
-    //currentRemainAnchorCount_ = 0;
+    //currentRemainTAnchorCount_ = 0;
 }
 
 
@@ -328,8 +431,9 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 {
     [noticelabel_ release];
     [numberLabel_ release];
-    [anchorNodeDict_ release];
+    [nodeTypeAnchorDict_ release];
     [nodeTypeArray_ release];
+    [distanceNotifyNode_ release];
     [super dealloc];
 }
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame;

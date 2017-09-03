@@ -96,7 +96,7 @@
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error {
     // Present an error message to the user
     
-    [UIAlertView showWithTitle:@"ARKit错误提示" message:error.localizedDescription  cancelButtonTitle:nil otherButtonTitles:@"重试" tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+    [UIAlertView showWithTitle:@"ARKit错误提示" message:error.localizedDescription  cancelButtonTitle:nil otherButtonTitles:@[@"重试"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
         [self resetTrackWithClear];
     }];
 }
