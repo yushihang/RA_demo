@@ -52,7 +52,7 @@
     [scene_ resetCount];
 }
 - (void) resetTrack
-{
+{ 
     [self.sceneView.session pause];
     if ([motionManager_ isAccelerometerAvailable])
     {
