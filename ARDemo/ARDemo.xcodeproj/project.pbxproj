@@ -7,6 +7,80 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18508A141F5B9EB0006C6C62 /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 18508A131F5B9EB0006C6C62 /* reset.png */; };
+		18508A171F5BA33D006C6C62 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */; };
+		18508A191F5BABE8006C6C62 /* distance_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 18508A181F5BABE8006C6C62 /* distance_notify.png */; };
+		186460561F5BDE52007A8E01 /* 东丈-1 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864600A1F5BDE52007A8E01 /* 东丈-1 (dragged).tiff */; };
+		186460571F5BDE52007A8E01 /* 东丈-10 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864600B1F5BDE52007A8E01 /* 东丈-10 (dragged).tiff */; };
+		186460581F5BDE52007A8E01 /* 东丈-11 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864600C1F5BDE52007A8E01 /* 东丈-11 (dragged).tiff */; };
+		186460591F5BDE52007A8E01 /* 东丈-12 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864600D1F5BDE52007A8E01 /* 东丈-12 (dragged).tiff */; };
+		1864605A1F5BDE52007A8E01 /* 东丈-2 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864600E1F5BDE52007A8E01 /* 东丈-2 (dragged).tiff */; };
+		1864605B1F5BDE52007A8E01 /* 东丈-3 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864600F1F5BDE52007A8E01 /* 东丈-3 (dragged).tiff */; };
+		1864605C1F5BDE52007A8E01 /* 东丈-4 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460101F5BDE52007A8E01 /* 东丈-4 (dragged).tiff */; };
+		1864605D1F5BDE52007A8E01 /* 东丈-5 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460111F5BDE52007A8E01 /* 东丈-5 (dragged).tiff */; };
+		1864605E1F5BDE52007A8E01 /* 东丈-6 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460121F5BDE52007A8E01 /* 东丈-6 (dragged).tiff */; };
+		1864605F1F5BDE52007A8E01 /* 东丈-7 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460131F5BDE52007A8E01 /* 东丈-7 (dragged).tiff */; };
+		186460601F5BDE52007A8E01 /* 东丈-8 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460141F5BDE52007A8E01 /* 东丈-8 (dragged).tiff */; };
+		186460611F5BDE52007A8E01 /* 东丈-9 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460151F5BDE52007A8E01 /* 东丈-9 (dragged).tiff */; };
+		186460621F5BDE52007A8E01 /* 吉斯-1 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460171F5BDE52007A8E01 /* 吉斯-1 (dragged).tiff */; };
+		186460631F5BDE52007A8E01 /* 吉斯-2 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460181F5BDE52007A8E01 /* 吉斯-2 (dragged).tiff */; };
+		186460641F5BDE52007A8E01 /* 吉斯-3 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460191F5BDE52007A8E01 /* 吉斯-3 (dragged).tiff */; };
+		186460651F5BDE52007A8E01 /* 吉斯-4 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864601A1F5BDE52007A8E01 /* 吉斯-4 (dragged).tiff */; };
+		186460661F5BDE52007A8E01 /* 吉斯-5 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864601B1F5BDE52007A8E01 /* 吉斯-5 (dragged).tiff */; };
+		186460671F5BDE52007A8E01 /* 吉斯-6 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864601C1F5BDE52007A8E01 /* 吉斯-6 (dragged).tiff */; };
+		186460681F5BDE52007A8E01 /* 坂崎良-1 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864601E1F5BDE52007A8E01 /* 坂崎良-1 (dragged).tiff */; };
+		186460691F5BDE52007A8E01 /* 坂崎良-2 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864601F1F5BDE52007A8E01 /* 坂崎良-2 (dragged).tiff */; };
+		1864606A1F5BDE52007A8E01 /* 坂崎良-3 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460201F5BDE52007A8E01 /* 坂崎良-3 (dragged).tiff */; };
+		1864606B1F5BDE52007A8E01 /* 坂崎良-4 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460211F5BDE52007A8E01 /* 坂崎良-4 (dragged).tiff */; };
+		1864606C1F5BDE52007A8E01 /* 坂崎良-5 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460221F5BDE52007A8E01 /* 坂崎良-5 (dragged).tiff */; };
+		1864606D1F5BDE52007A8E01 /* 坂崎良-6 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460231F5BDE52007A8E01 /* 坂崎良-6 (dragged).tiff */; };
+		1864606E1F5BDE52007A8E01 /* 安迪-1 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460251F5BDE52007A8E01 /* 安迪-1 (dragged).tiff */; };
+		1864606F1F5BDE52007A8E01 /* 安迪-10 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460261F5BDE52007A8E01 /* 安迪-10 (dragged).tiff */; };
+		186460701F5BDE52007A8E01 /* 安迪-11 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460271F5BDE52007A8E01 /* 安迪-11 (dragged).tiff */; };
+		186460711F5BDE52007A8E01 /* 安迪-12 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460281F5BDE52007A8E01 /* 安迪-12 (dragged).tiff */; };
+		186460721F5BDE52007A8E01 /* 安迪-13 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460291F5BDE52007A8E01 /* 安迪-13 (dragged).tiff */; };
+		186460731F5BDE52007A8E01 /* 安迪-2 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864602A1F5BDE52007A8E01 /* 安迪-2 (dragged).tiff */; };
+		186460741F5BDE52007A8E01 /* 安迪-3 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864602B1F5BDE52007A8E01 /* 安迪-3 (dragged).tiff */; };
+		186460751F5BDE52007A8E01 /* 安迪-4 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864602C1F5BDE52007A8E01 /* 安迪-4 (dragged).tiff */; };
+		186460761F5BDE52007A8E01 /* 安迪-5 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864602D1F5BDE52007A8E01 /* 安迪-5 (dragged).tiff */; };
+		186460771F5BDE52007A8E01 /* 安迪-6 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864602E1F5BDE52007A8E01 /* 安迪-6 (dragged).tiff */; };
+		186460781F5BDE52007A8E01 /* 安迪-7 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864602F1F5BDE52007A8E01 /* 安迪-7 (dragged).tiff */; };
+		186460791F5BDE52007A8E01 /* 安迪-8 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460301F5BDE52007A8E01 /* 安迪-8 (dragged).tiff */; };
+		1864607A1F5BDE52007A8E01 /* 安迪-9 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460311F5BDE52007A8E01 /* 安迪-9 (dragged).tiff */; };
+		1864607B1F5BDE52007A8E01 /* 特瑞-1 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460331F5BDE52007A8E01 /* 特瑞-1 (dragged).tiff */; };
+		1864607C1F5BDE52007A8E01 /* 特瑞-10 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460341F5BDE52007A8E01 /* 特瑞-10 (dragged).tiff */; };
+		1864607D1F5BDE52007A8E01 /* 特瑞-11 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460351F5BDE52007A8E01 /* 特瑞-11 (dragged).tiff */; };
+		1864607E1F5BDE52007A8E01 /* 特瑞-12 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460361F5BDE52007A8E01 /* 特瑞-12 (dragged).tiff */; };
+		1864607F1F5BDE52007A8E01 /* 特瑞-13 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460371F5BDE52007A8E01 /* 特瑞-13 (dragged).tiff */; };
+		186460801F5BDE52007A8E01 /* 特瑞-14 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460381F5BDE52007A8E01 /* 特瑞-14 (dragged).tiff */; };
+		186460811F5BDE52007A8E01 /* 特瑞-15 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460391F5BDE52007A8E01 /* 特瑞-15 (dragged).tiff */; };
+		186460821F5BDE52007A8E01 /* 特瑞-16 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864603A1F5BDE52007A8E01 /* 特瑞-16 (dragged).tiff */; };
+		186460831F5BDE52007A8E01 /* 特瑞-17 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864603B1F5BDE52007A8E01 /* 特瑞-17 (dragged).tiff */; };
+		186460841F5BDE52007A8E01 /* 特瑞-18 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864603C1F5BDE52007A8E01 /* 特瑞-18 (dragged).tiff */; };
+		186460851F5BDE52007A8E01 /* 特瑞-2 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864603D1F5BDE52007A8E01 /* 特瑞-2 (dragged).tiff */; };
+		186460861F5BDE52007A8E01 /* 特瑞-3 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864603E1F5BDE52007A8E01 /* 特瑞-3 (dragged).tiff */; };
+		186460871F5BDE52007A8E01 /* 特瑞-4 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864603F1F5BDE52007A8E01 /* 特瑞-4 (dragged).tiff */; };
+		186460881F5BDE52007A8E01 /* 特瑞-5 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460401F5BDE52007A8E01 /* 特瑞-5 (dragged).tiff */; };
+		186460891F5BDE52007A8E01 /* 特瑞-6 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460411F5BDE52007A8E01 /* 特瑞-6 (dragged).tiff */; };
+		1864608A1F5BDE52007A8E01 /* 特瑞-7 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460421F5BDE52007A8E01 /* 特瑞-7 (dragged).tiff */; };
+		1864608B1F5BDE52007A8E01 /* 特瑞-8 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460431F5BDE52007A8E01 /* 特瑞-8 (dragged).tiff */; };
+		1864608C1F5BDE52007A8E01 /* 特瑞-9 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460441F5BDE52007A8E01 /* 特瑞-9 (dragged).tiff */; };
+		1864608D1F5BDE52007A8E01 /* 雅典娜-1 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460461F5BDE52007A8E01 /* 雅典娜-1 (dragged).tiff */; };
+		1864608E1F5BDE52007A8E01 /* 雅典娜-10 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460471F5BDE52007A8E01 /* 雅典娜-10 (dragged).tiff */; };
+		1864608F1F5BDE52007A8E01 /* 雅典娜-11 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460481F5BDE52007A8E01 /* 雅典娜-11 (dragged).tiff */; };
+		186460901F5BDE52007A8E01 /* 雅典娜-12 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460491F5BDE52007A8E01 /* 雅典娜-12 (dragged).tiff */; };
+		186460911F5BDE52007A8E01 /* 雅典娜-13 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864604A1F5BDE52007A8E01 /* 雅典娜-13 (dragged).tiff */; };
+		186460921F5BDE52007A8E01 /* 雅典娜-14 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864604B1F5BDE52007A8E01 /* 雅典娜-14 (dragged).tiff */; };
+		186460931F5BDE52007A8E01 /* 雅典娜-15 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864604C1F5BDE52007A8E01 /* 雅典娜-15 (dragged).tiff */; };
+		186460941F5BDE52007A8E01 /* 雅典娜-16 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864604D1F5BDE52007A8E01 /* 雅典娜-16 (dragged).tiff */; };
+		186460951F5BDE52007A8E01 /* 雅典娜-2 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864604E1F5BDE52007A8E01 /* 雅典娜-2 (dragged).tiff */; };
+		186460961F5BDE52007A8E01 /* 雅典娜-3 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 1864604F1F5BDE52007A8E01 /* 雅典娜-3 (dragged).tiff */; };
+		186460971F5BDE52007A8E01 /* 雅典娜-4 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460501F5BDE52007A8E01 /* 雅典娜-4 (dragged).tiff */; };
+		186460981F5BDE52007A8E01 /* 雅典娜-5 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460511F5BDE52007A8E01 /* 雅典娜-5 (dragged).tiff */; };
+		186460991F5BDE52007A8E01 /* 雅典娜-6 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460521F5BDE52007A8E01 /* 雅典娜-6 (dragged).tiff */; };
+		1864609A1F5BDE52007A8E01 /* 雅典娜-7 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460531F5BDE52007A8E01 /* 雅典娜-7 (dragged).tiff */; };
+		1864609B1F5BDE52007A8E01 /* 雅典娜-8 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460541F5BDE52007A8E01 /* 雅典娜-8 (dragged).tiff */; };
+		1864609C1F5BDE52007A8E01 /* 雅典娜-9 (dragged).tiff in Resources */ = {isa = PBXBuildFile; fileRef = 186460551F5BDE52007A8E01 /* 雅典娜-9 (dragged).tiff */; };
 		186E183D1F5A601F008C1206 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 186E183C1F5A601F008C1206 /* AppDelegate.m */; };
 		186E18421F5A601F008C1206 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 186E18411F5A601F008C1206 /* Scene.mm */; };
 		186E18451F5A601F008C1206 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 186E18441F5A601F008C1206 /* ViewController.m */; };
@@ -20,6 +94,81 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18508A131F5B9EB0006C6C62 /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
+		18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
+		18508A181F5BABE8006C6C62 /* distance_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = distance_notify.png; sourceTree = "<group>"; };
+		1864600A1F5BDE52007A8E01 /* 东丈-1 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-1 (dragged).tiff"; sourceTree = "<group>"; };
+		1864600B1F5BDE52007A8E01 /* 东丈-10 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-10 (dragged).tiff"; sourceTree = "<group>"; };
+		1864600C1F5BDE52007A8E01 /* 东丈-11 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-11 (dragged).tiff"; sourceTree = "<group>"; };
+		1864600D1F5BDE52007A8E01 /* 东丈-12 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-12 (dragged).tiff"; sourceTree = "<group>"; };
+		1864600E1F5BDE52007A8E01 /* 东丈-2 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-2 (dragged).tiff"; sourceTree = "<group>"; };
+		1864600F1F5BDE52007A8E01 /* 东丈-3 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-3 (dragged).tiff"; sourceTree = "<group>"; };
+		186460101F5BDE52007A8E01 /* 东丈-4 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-4 (dragged).tiff"; sourceTree = "<group>"; };
+		186460111F5BDE52007A8E01 /* 东丈-5 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-5 (dragged).tiff"; sourceTree = "<group>"; };
+		186460121F5BDE52007A8E01 /* 东丈-6 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-6 (dragged).tiff"; sourceTree = "<group>"; };
+		186460131F5BDE52007A8E01 /* 东丈-7 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-7 (dragged).tiff"; sourceTree = "<group>"; };
+		186460141F5BDE52007A8E01 /* 东丈-8 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-8 (dragged).tiff"; sourceTree = "<group>"; };
+		186460151F5BDE52007A8E01 /* 东丈-9 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "东丈-9 (dragged).tiff"; sourceTree = "<group>"; };
+		186460171F5BDE52007A8E01 /* 吉斯-1 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "吉斯-1 (dragged).tiff"; sourceTree = "<group>"; };
+		186460181F5BDE52007A8E01 /* 吉斯-2 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "吉斯-2 (dragged).tiff"; sourceTree = "<group>"; };
+		186460191F5BDE52007A8E01 /* 吉斯-3 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "吉斯-3 (dragged).tiff"; sourceTree = "<group>"; };
+		1864601A1F5BDE52007A8E01 /* 吉斯-4 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "吉斯-4 (dragged).tiff"; sourceTree = "<group>"; };
+		1864601B1F5BDE52007A8E01 /* 吉斯-5 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "吉斯-5 (dragged).tiff"; sourceTree = "<group>"; };
+		1864601C1F5BDE52007A8E01 /* 吉斯-6 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "吉斯-6 (dragged).tiff"; sourceTree = "<group>"; };
+		1864601E1F5BDE52007A8E01 /* 坂崎良-1 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "坂崎良-1 (dragged).tiff"; sourceTree = "<group>"; };
+		1864601F1F5BDE52007A8E01 /* 坂崎良-2 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "坂崎良-2 (dragged).tiff"; sourceTree = "<group>"; };
+		186460201F5BDE52007A8E01 /* 坂崎良-3 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "坂崎良-3 (dragged).tiff"; sourceTree = "<group>"; };
+		186460211F5BDE52007A8E01 /* 坂崎良-4 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "坂崎良-4 (dragged).tiff"; sourceTree = "<group>"; };
+		186460221F5BDE52007A8E01 /* 坂崎良-5 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "坂崎良-5 (dragged).tiff"; sourceTree = "<group>"; };
+		186460231F5BDE52007A8E01 /* 坂崎良-6 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "坂崎良-6 (dragged).tiff"; sourceTree = "<group>"; };
+		186460251F5BDE52007A8E01 /* 安迪-1 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-1 (dragged).tiff"; sourceTree = "<group>"; };
+		186460261F5BDE52007A8E01 /* 安迪-10 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-10 (dragged).tiff"; sourceTree = "<group>"; };
+		186460271F5BDE52007A8E01 /* 安迪-11 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-11 (dragged).tiff"; sourceTree = "<group>"; };
+		186460281F5BDE52007A8E01 /* 安迪-12 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-12 (dragged).tiff"; sourceTree = "<group>"; };
+		186460291F5BDE52007A8E01 /* 安迪-13 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-13 (dragged).tiff"; sourceTree = "<group>"; };
+		1864602A1F5BDE52007A8E01 /* 安迪-2 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-2 (dragged).tiff"; sourceTree = "<group>"; };
+		1864602B1F5BDE52007A8E01 /* 安迪-3 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-3 (dragged).tiff"; sourceTree = "<group>"; };
+		1864602C1F5BDE52007A8E01 /* 安迪-4 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-4 (dragged).tiff"; sourceTree = "<group>"; };
+		1864602D1F5BDE52007A8E01 /* 安迪-5 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-5 (dragged).tiff"; sourceTree = "<group>"; };
+		1864602E1F5BDE52007A8E01 /* 安迪-6 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-6 (dragged).tiff"; sourceTree = "<group>"; };
+		1864602F1F5BDE52007A8E01 /* 安迪-7 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-7 (dragged).tiff"; sourceTree = "<group>"; };
+		186460301F5BDE52007A8E01 /* 安迪-8 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-8 (dragged).tiff"; sourceTree = "<group>"; };
+		186460311F5BDE52007A8E01 /* 安迪-9 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "安迪-9 (dragged).tiff"; sourceTree = "<group>"; };
+		186460331F5BDE52007A8E01 /* 特瑞-1 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-1 (dragged).tiff"; sourceTree = "<group>"; };
+		186460341F5BDE52007A8E01 /* 特瑞-10 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-10 (dragged).tiff"; sourceTree = "<group>"; };
+		186460351F5BDE52007A8E01 /* 特瑞-11 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-11 (dragged).tiff"; sourceTree = "<group>"; };
+		186460361F5BDE52007A8E01 /* 特瑞-12 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-12 (dragged).tiff"; sourceTree = "<group>"; };
+		186460371F5BDE52007A8E01 /* 特瑞-13 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-13 (dragged).tiff"; sourceTree = "<group>"; };
+		186460381F5BDE52007A8E01 /* 特瑞-14 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-14 (dragged).tiff"; sourceTree = "<group>"; };
+		186460391F5BDE52007A8E01 /* 特瑞-15 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-15 (dragged).tiff"; sourceTree = "<group>"; };
+		1864603A1F5BDE52007A8E01 /* 特瑞-16 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-16 (dragged).tiff"; sourceTree = "<group>"; };
+		1864603B1F5BDE52007A8E01 /* 特瑞-17 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-17 (dragged).tiff"; sourceTree = "<group>"; };
+		1864603C1F5BDE52007A8E01 /* 特瑞-18 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-18 (dragged).tiff"; sourceTree = "<group>"; };
+		1864603D1F5BDE52007A8E01 /* 特瑞-2 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-2 (dragged).tiff"; sourceTree = "<group>"; };
+		1864603E1F5BDE52007A8E01 /* 特瑞-3 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-3 (dragged).tiff"; sourceTree = "<group>"; };
+		1864603F1F5BDE52007A8E01 /* 特瑞-4 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-4 (dragged).tiff"; sourceTree = "<group>"; };
+		186460401F5BDE52007A8E01 /* 特瑞-5 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-5 (dragged).tiff"; sourceTree = "<group>"; };
+		186460411F5BDE52007A8E01 /* 特瑞-6 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-6 (dragged).tiff"; sourceTree = "<group>"; };
+		186460421F5BDE52007A8E01 /* 特瑞-7 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-7 (dragged).tiff"; sourceTree = "<group>"; };
+		186460431F5BDE52007A8E01 /* 特瑞-8 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-8 (dragged).tiff"; sourceTree = "<group>"; };
+		186460441F5BDE52007A8E01 /* 特瑞-9 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "特瑞-9 (dragged).tiff"; sourceTree = "<group>"; };
+		186460461F5BDE52007A8E01 /* 雅典娜-1 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-1 (dragged).tiff"; sourceTree = "<group>"; };
+		186460471F5BDE52007A8E01 /* 雅典娜-10 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-10 (dragged).tiff"; sourceTree = "<group>"; };
+		186460481F5BDE52007A8E01 /* 雅典娜-11 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-11 (dragged).tiff"; sourceTree = "<group>"; };
+		186460491F5BDE52007A8E01 /* 雅典娜-12 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-12 (dragged).tiff"; sourceTree = "<group>"; };
+		1864604A1F5BDE52007A8E01 /* 雅典娜-13 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-13 (dragged).tiff"; sourceTree = "<group>"; };
+		1864604B1F5BDE52007A8E01 /* 雅典娜-14 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-14 (dragged).tiff"; sourceTree = "<group>"; };
+		1864604C1F5BDE52007A8E01 /* 雅典娜-15 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-15 (dragged).tiff"; sourceTree = "<group>"; };
+		1864604D1F5BDE52007A8E01 /* 雅典娜-16 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-16 (dragged).tiff"; sourceTree = "<group>"; };
+		1864604E1F5BDE52007A8E01 /* 雅典娜-2 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-2 (dragged).tiff"; sourceTree = "<group>"; };
+		1864604F1F5BDE52007A8E01 /* 雅典娜-3 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-3 (dragged).tiff"; sourceTree = "<group>"; };
+		186460501F5BDE52007A8E01 /* 雅典娜-4 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-4 (dragged).tiff"; sourceTree = "<group>"; };
+		186460511F5BDE52007A8E01 /* 雅典娜-5 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-5 (dragged).tiff"; sourceTree = "<group>"; };
+		186460521F5BDE52007A8E01 /* 雅典娜-6 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-6 (dragged).tiff"; sourceTree = "<group>"; };
+		186460531F5BDE52007A8E01 /* 雅典娜-7 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-7 (dragged).tiff"; sourceTree = "<group>"; };
+		186460541F5BDE52007A8E01 /* 雅典娜-8 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-8 (dragged).tiff"; sourceTree = "<group>"; };
+		186460551F5BDE52007A8E01 /* 雅典娜-9 (dragged).tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "雅典娜-9 (dragged).tiff"; sourceTree = "<group>"; };
 		186E18381F5A601F008C1206 /* ARDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		186E183B1F5A601F008C1206 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		186E183C1F5A601F008C1206 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +200,132 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		186460081F5BDE52007A8E01 /* gif */ = {
+			isa = PBXGroup;
+			children = (
+				186460091F5BDE52007A8E01 /* 东丈 */,
+				186460161F5BDE52007A8E01 /* 吉斯 */,
+				1864601D1F5BDE52007A8E01 /* 坂崎良 */,
+				186460241F5BDE52007A8E01 /* 安迪 */,
+				186460321F5BDE52007A8E01 /* 特瑞 */,
+				186460451F5BDE52007A8E01 /* 雅典娜 */,
+			);
+			path = gif;
+			sourceTree = "<group>";
+		};
+		186460091F5BDE52007A8E01 /* 东丈 */ = {
+			isa = PBXGroup;
+			children = (
+				1864600A1F5BDE52007A8E01 /* 东丈-1 (dragged).tiff */,
+				1864600B1F5BDE52007A8E01 /* 东丈-10 (dragged).tiff */,
+				1864600C1F5BDE52007A8E01 /* 东丈-11 (dragged).tiff */,
+				1864600D1F5BDE52007A8E01 /* 东丈-12 (dragged).tiff */,
+				1864600E1F5BDE52007A8E01 /* 东丈-2 (dragged).tiff */,
+				1864600F1F5BDE52007A8E01 /* 东丈-3 (dragged).tiff */,
+				186460101F5BDE52007A8E01 /* 东丈-4 (dragged).tiff */,
+				186460111F5BDE52007A8E01 /* 东丈-5 (dragged).tiff */,
+				186460121F5BDE52007A8E01 /* 东丈-6 (dragged).tiff */,
+				186460131F5BDE52007A8E01 /* 东丈-7 (dragged).tiff */,
+				186460141F5BDE52007A8E01 /* 东丈-8 (dragged).tiff */,
+				186460151F5BDE52007A8E01 /* 东丈-9 (dragged).tiff */,
+			);
+			path = "东丈";
+			sourceTree = "<group>";
+		};
+		186460161F5BDE52007A8E01 /* 吉斯 */ = {
+			isa = PBXGroup;
+			children = (
+				186460171F5BDE52007A8E01 /* 吉斯-1 (dragged).tiff */,
+				186460181F5BDE52007A8E01 /* 吉斯-2 (dragged).tiff */,
+				186460191F5BDE52007A8E01 /* 吉斯-3 (dragged).tiff */,
+				1864601A1F5BDE52007A8E01 /* 吉斯-4 (dragged).tiff */,
+				1864601B1F5BDE52007A8E01 /* 吉斯-5 (dragged).tiff */,
+				1864601C1F5BDE52007A8E01 /* 吉斯-6 (dragged).tiff */,
+			);
+			path = "吉斯";
+			sourceTree = "<group>";
+		};
+		1864601D1F5BDE52007A8E01 /* 坂崎良 */ = {
+			isa = PBXGroup;
+			children = (
+				1864601E1F5BDE52007A8E01 /* 坂崎良-1 (dragged).tiff */,
+				1864601F1F5BDE52007A8E01 /* 坂崎良-2 (dragged).tiff */,
+				186460201F5BDE52007A8E01 /* 坂崎良-3 (dragged).tiff */,
+				186460211F5BDE52007A8E01 /* 坂崎良-4 (dragged).tiff */,
+				186460221F5BDE52007A8E01 /* 坂崎良-5 (dragged).tiff */,
+				186460231F5BDE52007A8E01 /* 坂崎良-6 (dragged).tiff */,
+			);
+			path = "坂崎良";
+			sourceTree = "<group>";
+		};
+		186460241F5BDE52007A8E01 /* 安迪 */ = {
+			isa = PBXGroup;
+			children = (
+				186460251F5BDE52007A8E01 /* 安迪-1 (dragged).tiff */,
+				186460261F5BDE52007A8E01 /* 安迪-10 (dragged).tiff */,
+				186460271F5BDE52007A8E01 /* 安迪-11 (dragged).tiff */,
+				186460281F5BDE52007A8E01 /* 安迪-12 (dragged).tiff */,
+				186460291F5BDE52007A8E01 /* 安迪-13 (dragged).tiff */,
+				1864602A1F5BDE52007A8E01 /* 安迪-2 (dragged).tiff */,
+				1864602B1F5BDE52007A8E01 /* 安迪-3 (dragged).tiff */,
+				1864602C1F5BDE52007A8E01 /* 安迪-4 (dragged).tiff */,
+				1864602D1F5BDE52007A8E01 /* 安迪-5 (dragged).tiff */,
+				1864602E1F5BDE52007A8E01 /* 安迪-6 (dragged).tiff */,
+				1864602F1F5BDE52007A8E01 /* 安迪-7 (dragged).tiff */,
+				186460301F5BDE52007A8E01 /* 安迪-8 (dragged).tiff */,
+				186460311F5BDE52007A8E01 /* 安迪-9 (dragged).tiff */,
+			);
+			path = "安迪";
+			sourceTree = "<group>";
+		};
+		186460321F5BDE52007A8E01 /* 特瑞 */ = {
+			isa = PBXGroup;
+			children = (
+				186460331F5BDE52007A8E01 /* 特瑞-1 (dragged).tiff */,
+				186460341F5BDE52007A8E01 /* 特瑞-10 (dragged).tiff */,
+				186460351F5BDE52007A8E01 /* 特瑞-11 (dragged).tiff */,
+				186460361F5BDE52007A8E01 /* 特瑞-12 (dragged).tiff */,
+				186460371F5BDE52007A8E01 /* 特瑞-13 (dragged).tiff */,
+				186460381F5BDE52007A8E01 /* 特瑞-14 (dragged).tiff */,
+				186460391F5BDE52007A8E01 /* 特瑞-15 (dragged).tiff */,
+				1864603A1F5BDE52007A8E01 /* 特瑞-16 (dragged).tiff */,
+				1864603B1F5BDE52007A8E01 /* 特瑞-17 (dragged).tiff */,
+				1864603C1F5BDE52007A8E01 /* 特瑞-18 (dragged).tiff */,
+				1864603D1F5BDE52007A8E01 /* 特瑞-2 (dragged).tiff */,
+				1864603E1F5BDE52007A8E01 /* 特瑞-3 (dragged).tiff */,
+				1864603F1F5BDE52007A8E01 /* 特瑞-4 (dragged).tiff */,
+				186460401F5BDE52007A8E01 /* 特瑞-5 (dragged).tiff */,
+				186460411F5BDE52007A8E01 /* 特瑞-6 (dragged).tiff */,
+				186460421F5BDE52007A8E01 /* 特瑞-7 (dragged).tiff */,
+				186460431F5BDE52007A8E01 /* 特瑞-8 (dragged).tiff */,
+				186460441F5BDE52007A8E01 /* 特瑞-9 (dragged).tiff */,
+			);
+			path = "特瑞";
+			sourceTree = "<group>";
+		};
+		186460451F5BDE52007A8E01 /* 雅典娜 */ = {
+			isa = PBXGroup;
+			children = (
+				186460461F5BDE52007A8E01 /* 雅典娜-1 (dragged).tiff */,
+				186460471F5BDE52007A8E01 /* 雅典娜-10 (dragged).tiff */,
+				186460481F5BDE52007A8E01 /* 雅典娜-11 (dragged).tiff */,
+				186460491F5BDE52007A8E01 /* 雅典娜-12 (dragged).tiff */,
+				1864604A1F5BDE52007A8E01 /* 雅典娜-13 (dragged).tiff */,
+				1864604B1F5BDE52007A8E01 /* 雅典娜-14 (dragged).tiff */,
+				1864604C1F5BDE52007A8E01 /* 雅典娜-15 (dragged).tiff */,
+				1864604D1F5BDE52007A8E01 /* 雅典娜-16 (dragged).tiff */,
+				1864604E1F5BDE52007A8E01 /* 雅典娜-2 (dragged).tiff */,
+				1864604F1F5BDE52007A8E01 /* 雅典娜-3 (dragged).tiff */,
+				186460501F5BDE52007A8E01 /* 雅典娜-4 (dragged).tiff */,
+				186460511F5BDE52007A8E01 /* 雅典娜-5 (dragged).tiff */,
+				186460521F5BDE52007A8E01 /* 雅典娜-6 (dragged).tiff */,
+				186460531F5BDE52007A8E01 /* 雅典娜-7 (dragged).tiff */,
+				186460541F5BDE52007A8E01 /* 雅典娜-8 (dragged).tiff */,
+				186460551F5BDE52007A8E01 /* 雅典娜-9 (dragged).tiff */,
+			);
+			path = "雅典娜";
+			sourceTree = "<group>";
+		};
 		186E182F1F5A601F008C1206 = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +346,11 @@
 		186E183A1F5A601F008C1206 /* ARDemo */ = {
 			isa = PBXGroup;
 			children = (
+				186460081F5BDE52007A8E01 /* gif */,
+				18508A181F5BABE8006C6C62 /* distance_notify.png */,
+				18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */,
+				18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */,
+				18508A131F5B9EB0006C6C62 /* reset.png */,
 				186E183B1F5A601F008C1206 /* AppDelegate.h */,
 				186E183C1F5A601F008C1206 /* AppDelegate.m */,
 				186E18401F5A601F008C1206 /* Scene.h */,
@@ -154,9 +434,82 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1864609B1F5BDE52007A8E01 /* 雅典娜-8 (dragged).tiff in Resources */,
+				186460761F5BDE52007A8E01 /* 安迪-5 (dragged).tiff in Resources */,
+				186460591F5BDE52007A8E01 /* 东丈-12 (dragged).tiff in Resources */,
+				1864608A1F5BDE52007A8E01 /* 特瑞-7 (dragged).tiff in Resources */,
+				186460971F5BDE52007A8E01 /* 雅典娜-4 (dragged).tiff in Resources */,
+				186460691F5BDE52007A8E01 /* 坂崎良-2 (dragged).tiff in Resources */,
+				1864609A1F5BDE52007A8E01 /* 雅典娜-7 (dragged).tiff in Resources */,
+				186460721F5BDE52007A8E01 /* 安迪-13 (dragged).tiff in Resources */,
+				186460911F5BDE52007A8E01 /* 雅典娜-13 (dragged).tiff in Resources */,
+				186460611F5BDE52007A8E01 /* 东丈-9 (dragged).tiff in Resources */,
 				186E184D1F5A601F008C1206 /* LaunchScreen.storyboard in Resources */,
+				186460671F5BDE52007A8E01 /* 吉斯-6 (dragged).tiff in Resources */,
+				186460601F5BDE52007A8E01 /* 东丈-8 (dragged).tiff in Resources */,
+				186460781F5BDE52007A8E01 /* 安迪-7 (dragged).tiff in Resources */,
+				186460961F5BDE52007A8E01 /* 雅典娜-3 (dragged).tiff in Resources */,
+				1864605A1F5BDE52007A8E01 /* 东丈-2 (dragged).tiff in Resources */,
+				186460881F5BDE52007A8E01 /* 特瑞-5 (dragged).tiff in Resources */,
+				186460741F5BDE52007A8E01 /* 安迪-3 (dragged).tiff in Resources */,
+				1864607C1F5BDE52007A8E01 /* 特瑞-10 (dragged).tiff in Resources */,
+				186460561F5BDE52007A8E01 /* 东丈-1 (dragged).tiff in Resources */,
+				1864607E1F5BDE52007A8E01 /* 特瑞-12 (dragged).tiff in Resources */,
+				186460571F5BDE52007A8E01 /* 东丈-10 (dragged).tiff in Resources */,
+				1864607B1F5BDE52007A8E01 /* 特瑞-1 (dragged).tiff in Resources */,
+				18508A191F5BABE8006C6C62 /* distance_notify.png in Resources */,
+				186460941F5BDE52007A8E01 /* 雅典娜-16 (dragged).tiff in Resources */,
+				1864605E1F5BDE52007A8E01 /* 东丈-6 (dragged).tiff in Resources */,
+				186460901F5BDE52007A8E01 /* 雅典娜-12 (dragged).tiff in Resources */,
+				1864606F1F5BDE52007A8E01 /* 安迪-10 (dragged).tiff in Resources */,
+				186460871F5BDE52007A8E01 /* 特瑞-4 (dragged).tiff in Resources */,
+				186460801F5BDE52007A8E01 /* 特瑞-14 (dragged).tiff in Resources */,
+				186460701F5BDE52007A8E01 /* 安迪-11 (dragged).tiff in Resources */,
+				186460931F5BDE52007A8E01 /* 雅典娜-15 (dragged).tiff in Resources */,
+				1864606A1F5BDE52007A8E01 /* 坂崎良-3 (dragged).tiff in Resources */,
+				186460831F5BDE52007A8E01 /* 特瑞-17 (dragged).tiff in Resources */,
+				186460621F5BDE52007A8E01 /* 吉斯-1 (dragged).tiff in Resources */,
+				186460891F5BDE52007A8E01 /* 特瑞-6 (dragged).tiff in Resources */,
+				186460921F5BDE52007A8E01 /* 雅典娜-14 (dragged).tiff in Resources */,
+				186460811F5BDE52007A8E01 /* 特瑞-15 (dragged).tiff in Resources */,
+				1864605C1F5BDE52007A8E01 /* 东丈-4 (dragged).tiff in Resources */,
+				186460861F5BDE52007A8E01 /* 特瑞-3 (dragged).tiff in Resources */,
+				1864608F1F5BDE52007A8E01 /* 雅典娜-11 (dragged).tiff in Resources */,
+				1864608D1F5BDE52007A8E01 /* 雅典娜-1 (dragged).tiff in Resources */,
+				186460951F5BDE52007A8E01 /* 雅典娜-2 (dragged).tiff in Resources */,
+				1864606E1F5BDE52007A8E01 /* 安迪-1 (dragged).tiff in Resources */,
+				186460661F5BDE52007A8E01 /* 吉斯-5 (dragged).tiff in Resources */,
+				1864609C1F5BDE52007A8E01 /* 雅典娜-9 (dragged).tiff in Resources */,
+				1864605B1F5BDE52007A8E01 /* 东丈-3 (dragged).tiff in Resources */,
 				186E184A1F5A601F008C1206 /* Assets.xcassets in Resources */,
+				186460751F5BDE52007A8E01 /* 安迪-4 (dragged).tiff in Resources */,
+				186460841F5BDE52007A8E01 /* 特瑞-18 (dragged).tiff in Resources */,
+				186460641F5BDE52007A8E01 /* 吉斯-3 (dragged).tiff in Resources */,
+				186460581F5BDE52007A8E01 /* 东丈-11 (dragged).tiff in Resources */,
+				1864607D1F5BDE52007A8E01 /* 特瑞-11 (dragged).tiff in Resources */,
+				186460651F5BDE52007A8E01 /* 吉斯-4 (dragged).tiff in Resources */,
+				1864608E1F5BDE52007A8E01 /* 雅典娜-10 (dragged).tiff in Resources */,
+				1864607A1F5BDE52007A8E01 /* 安迪-9 (dragged).tiff in Resources */,
+				1864605F1F5BDE52007A8E01 /* 东丈-7 (dragged).tiff in Resources */,
+				186460731F5BDE52007A8E01 /* 安迪-2 (dragged).tiff in Resources */,
+				186460771F5BDE52007A8E01 /* 安迪-6 (dragged).tiff in Resources */,
 				186E18481F5A601F008C1206 /* Main.storyboard in Resources */,
+				1864608B1F5BDE52007A8E01 /* 特瑞-8 (dragged).tiff in Resources */,
+				1864607F1F5BDE52007A8E01 /* 特瑞-13 (dragged).tiff in Resources */,
+				1864606D1F5BDE52007A8E01 /* 坂崎良-6 (dragged).tiff in Resources */,
+				186460851F5BDE52007A8E01 /* 特瑞-2 (dragged).tiff in Resources */,
+				186460981F5BDE52007A8E01 /* 雅典娜-5 (dragged).tiff in Resources */,
+				186460711F5BDE52007A8E01 /* 安迪-12 (dragged).tiff in Resources */,
+				1864606B1F5BDE52007A8E01 /* 坂崎良-4 (dragged).tiff in Resources */,
+				186460821F5BDE52007A8E01 /* 特瑞-16 (dragged).tiff in Resources */,
+				186460791F5BDE52007A8E01 /* 安迪-8 (dragged).tiff in Resources */,
+				1864606C1F5BDE52007A8E01 /* 坂崎良-5 (dragged).tiff in Resources */,
+				18508A141F5B9EB0006C6C62 /* reset.png in Resources */,
+				186460991F5BDE52007A8E01 /* 雅典娜-6 (dragged).tiff in Resources */,
+				1864605D1F5BDE52007A8E01 /* 东丈-5 (dragged).tiff in Resources */,
+				186460631F5BDE52007A8E01 /* 吉斯-2 (dragged).tiff in Resources */,
+				1864608C1F5BDE52007A8E01 /* 特瑞-9 (dragged).tiff in Resources */,
+				186460681F5BDE52007A8E01 /* 坂崎良-1 (dragged).tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +522,7 @@
 			files = (
 				186E18451F5A601F008C1206 /* ViewController.m in Sources */,
 				186E18421F5A601F008C1206 /* Scene.mm in Sources */,
+				18508A171F5BA33D006C6C62 /* UIAlertView+Blocks.m in Sources */,
 				186E18501F5A601F008C1206 /* main.m in Sources */,
 				186E183D1F5A601F008C1206 /* AppDelegate.m in Sources */,
 			);

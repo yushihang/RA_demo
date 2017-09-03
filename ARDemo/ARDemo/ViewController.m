@@ -8,9 +8,12 @@
 
 #import "ViewController.h"
 #import "Scene.h"
+#import "UIAlertView+Blocks.h"
 
 @interface ViewController () <ARSKViewDelegate>
-
+{
+    Scene* scene_;
+}
 @property (nonatomic, strong) IBOutlet ARSKView *sceneView;
 
 @end
@@ -29,20 +32,31 @@
     self.sceneView.showsNodeCount = YES;
     
     // Load the SKScene from 'Scene.sks'
-    Scene* scene = (Scene *)[Scene sceneWithSize:self.sceneView.bounds.size];
+    scene_ = [(Scene *)[Scene sceneWithSize:self.sceneView.bounds.size] retain];
     // Present the scene
-    [self.sceneView presentScene:scene];
+    [self.sceneView presentScene:scene_];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTrackWithClear) name:RESET_ARKIT_TRACK_FROM_SCENE object:nil];
 }
-
-- (void) resetTrack{
+- (void) resetTrackWithClear
+{
+    [self resetTrackWithOption:ARSessionRunOptionResetTracking|ARSessionRunOptionRemoveExistingAnchors];
+    [scene_ resetCount];
+}
+- (void) resetTrack
+{
+    [self resetTrackWithOption:0];
+}
+- (void) resetTrackWithOption:(ARSessionRunOptions)options
+{
     if (ARWorldTrackingConfiguration.isSupported) {
         ARWorldTrackingConfiguration*  configuration = [[[ARWorldTrackingConfiguration alloc] init] autorelease];
         //configuration.planeDetection = .horizontal
-        [self.sceneView.session runWithConfiguration:configuration options:0];
+        [self.sceneView.session runWithConfiguration:configuration options:options];
     }
     else{
         AROrientationTrackingConfiguration* configuration = [[[AROrientationTrackingConfiguration alloc] init] autorelease];
-        [self.sceneView.session runWithConfiguration:configuration options:0];
+        [self.sceneView.session runWithConfiguration:configuration options:options];
     }
 }
 
@@ -76,15 +90,15 @@
 
 - (SKNode *)view:(ARSKView *)view nodeForAnchor:(ARAnchor *)anchor {
     // Create and configure a node for the anchor added to the view's session.
-    SKLabelNode *labelNode = [SKLabelNode labelNodeWithText:@"😂"];
-    labelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-    labelNode.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-    return labelNode;
+    return [scene_ view:view nodeForAnchor:anchor];
 }
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error {
     // Present an error message to the user
     
+    [UIAlertView showWithTitle:@"ARKit错误提示" message:error.localizedDescription  cancelButtonTitle:nil otherButtonTitles:@"重试" tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+        [self resetTrackWithClear];
+    }];
 }
 
 - (void)sessionWasInterrupted:(ARSession *)session {
@@ -95,6 +109,18 @@
 - (void)sessionInterruptionEnded:(ARSession *)session {
     // Reset tracking and/or remove existing anchors if consistent tracking is required
     [self resetTrack];
+    
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [scene_ release];
+    [super dealloc];
+}
+
+- (void)view:(ARSKView *)view didRemoveNode:(SKNode *)node forAnchor:(ARAnchor *)anchor;
+{
     
 }
 
