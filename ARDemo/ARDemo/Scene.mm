@@ -207,6 +207,8 @@
     // Setup your scene here
     [self addChild:noticelabel_];
     [self addChild:numberLabel_];
+    [self addChild:foundNoticeLabel_];
+    [self addChild:foundNumberLabel_];
     [self addChild:resetButton_];
     [self addChild:distanceNotifyNode_];
     distanceNotifyNode_.alpha = 0;
@@ -431,6 +433,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 {
     [noticelabel_ release];
     [numberLabel_ release];
+    [foundNoticeLabel_ release];
+    [foundNumberLabel_ release];
     [nodeTypeAnchorDict_ release];
     [nodeTypeArray_ release];
     [distanceNotifyNode_ release];

@@ -94,6 +94,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1829CB2D1F5C03170099EF6B /* direction_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = direction_notify.png; path = ARDemo/direction_notify.png; sourceTree = SOURCE_ROOT; };
 		18508A131F5B9EB0006C6C62 /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
 		18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
@@ -348,6 +349,7 @@
 			children = (
 				186460081F5BDE52007A8E01 /* gif */,
 				18508A181F5BABE8006C6C62 /* distance_notify.png */,
+				1829CB2D1F5C03170099EF6B /* direction_notify.png */,
 				18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */,
 				18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */,
 				18508A131F5B9EB0006C6C62 /* reset.png */,
