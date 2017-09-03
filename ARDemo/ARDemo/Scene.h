@@ -13,4 +13,5 @@
 @interface Scene : SKScene<ARSessionDelegate>
 - (void) resetCount;
 - (SKNode *)view:(ARSKView *)view nodeForAnchor:(ARAnchor *)anchor;
+- (void)setDirectionNotifyNodeVisible:(BOOL)visible;
 @end

@@ -57,6 +57,7 @@
     std::unordered_map<int, std::pair<std::string, int>> gifDataMap_;
     
     SKSpriteNode* distanceNotifyNode_;
+    SKSpriteNode* directionNotifyNode_;
     
     BOOL guessMode_;
 }
@@ -115,6 +116,11 @@
         distanceNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"distance_notify.png"];
         distanceNotifyNode_.xScale = distanceNotifyNode_.yScale = [UIScreen mainScreen].bounds.size.height * 0.1 / distanceNotifyNode_.size.height ;
         distanceNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - distanceNotifyNode_.frame.size.height*0.75);
+        
+        directionNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"direction_notify.png"];
+        directionNotifyNode_.xScale = directionNotifyNode_.yScale = [UIScreen mainScreen].bounds.size.height * 0.1 / directionNotifyNode_.size.height ;
+        directionNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - directionNotifyNode_.frame.size.height*0.75);
+        directionNotifyNode_.hidden = NO;
         
         guessMode_ = NO;
         
@@ -212,6 +218,7 @@
     [self addChild:resetButton_];
     [self addChild:distanceNotifyNode_];
     distanceNotifyNode_.alpha = 0;
+    [self addChild:directionNotifyNode_];
     
     ARSKView* sceneView= (ARSKView*)self.view;
     if (![sceneView isKindOfClass:[ARSKView class]]){
@@ -248,7 +255,8 @@
 }
 
 - (void)update:(CFTimeInterval)currentTime {
-    
+    if (!directionNotifyNode_.hidden)
+        return;
     static NSTimeInterval lastCreateTime = 0;
     NSTimeInterval now = [[NSDate  date]timeIntervalSince1970];
     if (now - lastCreateTime < 5)
@@ -406,6 +414,20 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
 }
 
+
+-(void)showGuessView:(SKSpriteNode*)toGuessNode
+{
+    //bezier curve
+    
+    float targetNodeHeight = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.8;
+    
+    float guessNodeHeight = toGuessNode.texture.size.height;
+    
+    22222
+    
+    
+}
+
 - (void)showNotifyForDistance
 {
     [distanceNotifyNode_ removeAllActions];
@@ -438,6 +460,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     [nodeTypeAnchorDict_ release];
     [nodeTypeArray_ release];
     [distanceNotifyNode_ release];
+    [directionNotifyNode_ release];
     [super dealloc];
 }
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame;
@@ -478,4 +501,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
 }
 
+- (void)setDirectionNotifyNodeVisible:(BOOL)visible;
+{
+    directionNotifyNode_.hidden = !visible;
+}
 @end

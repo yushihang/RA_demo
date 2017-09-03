@@ -9,10 +9,13 @@
 #import "ViewController.h"
 #import "Scene.h"
 #import "UIAlertView+Blocks.h"
+#import <CoreMotion/CoreMotion.h>
 
 @interface ViewController () <ARSKViewDelegate>
 {
     Scene* scene_;
+    CMMotionManager *motionManager_;
+    NSOperationQueue *motionQueue_;
 }
 @property (nonatomic, strong) IBOutlet ARSKView *sceneView;
 
@@ -37,6 +40,11 @@
     [self.sceneView presentScene:scene_];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTrackWithClear) name:RESET_ARKIT_TRACK_FROM_SCENE object:nil];
+    
+    motionManager_ = [[CMMotionManager alloc] init];
+    motionManager_.accelerometerUpdateInterval = 0.1;       // 0.01 = 1s/100 = 100Hz
+    motionQueue_ = [[NSOperationQueue alloc] init];
+    [self resetTrack];
 }
 - (void) resetTrackWithClear
 {
@@ -45,10 +53,36 @@
 }
 - (void) resetTrack
 {
-    [self resetTrackWithOption:0];
+    [self.sceneView.session pause];
+    if ([motionManager_ isAccelerometerAvailable])
+    {
+        [motionManager_ startAccelerometerUpdatesToQueue:motionQueue_ withHandler:^(CMAccelerometerData *accelerometerData, NSError *error){
+            /*
+            NSLog(@"X = %0.4f, Y = %.04f, Z = %.04f",
+                  accelerometerData.acceleration.x,
+                  accelerometerData.acceleration.y,
+                  accelerometerData.acceleration.z);
+             */
+            if (fabs(accelerometerData.acceleration.z) < 0.1)
+            {
+                [self resetTrackWithOption:0];
+                [motionManager_ stopAccelerometerUpdates];
+                [scene_ setDirectionNotifyNodeVisible:NO];
+            }
+            else
+            {
+                [scene_ setDirectionNotifyNodeVisible:YES];
+            }
+            //[motionManager_ stopAccelerometerUpdates];
+        }];
+    }
+    else
+        [self resetTrackWithOption:0];
 }
 - (void) resetTrackWithOption:(ARSessionRunOptions)options
 {
+
+    
     if (ARWorldTrackingConfiguration.isSupported) {
         ARWorldTrackingConfiguration*  configuration = [[[ARWorldTrackingConfiguration alloc] init] autorelease];
         //configuration.planeDetection = .horizontal
@@ -60,6 +94,7 @@
     }
 }
 
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -70,8 +105,7 @@
      // Run the view's session
      [self.sceneView.session runWithConfiguration:configuration];
      */
-    
-    [self resetTrack];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -116,6 +150,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [scene_ release];
+    [motionManager_ release];
+    [motionQueue_ release];
     [super dealloc];
 }
 

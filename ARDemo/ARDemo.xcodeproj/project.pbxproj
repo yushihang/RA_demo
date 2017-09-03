@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1829CB2F1F5C04290099EF6B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1829CB2E1F5C04290099EF6B /* CoreMotion.framework */; };
+		1829CB301F5C07CE0099EF6B /* direction_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 1829CB2D1F5C03170099EF6B /* direction_notify.png */; };
 		18508A141F5B9EB0006C6C62 /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 18508A131F5B9EB0006C6C62 /* reset.png */; };
 		18508A171F5BA33D006C6C62 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */; };
 		18508A191F5BABE8006C6C62 /* distance_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 18508A181F5BABE8006C6C62 /* distance_notify.png */; };
@@ -95,6 +97,7 @@
 
 /* Begin PBXFileReference section */
 		1829CB2D1F5C03170099EF6B /* direction_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = direction_notify.png; path = ARDemo/direction_notify.png; sourceTree = SOURCE_ROOT; };
+		1829CB2E1F5C04290099EF6B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		18508A131F5B9EB0006C6C62 /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
 		18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
@@ -192,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1829CB2F1F5C04290099EF6B /* CoreMotion.framework in Frameworks */,
 				18C23A8F1F5AB73E00242C57 /* SpriteKit.framework in Frameworks */,
 				18C23A8D1F5AB73300242C57 /* ARKit.framework in Frameworks */,
 				18C23A8B1F5AB72C00242C57 /* SceneKit.framework in Frameworks */,
@@ -371,6 +375,7 @@
 		18C23A891F5AB72C00242C57 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1829CB2E1F5C04290099EF6B /* CoreMotion.framework */,
 				18C23A8E1F5AB73E00242C57 /* SpriteKit.framework */,
 				18C23A8C1F5AB73300242C57 /* ARKit.framework */,
 				18C23A8A1F5AB72C00242C57 /* SceneKit.framework */,
@@ -468,6 +473,7 @@
 				186460801F5BDE52007A8E01 /* tr-14 (dragged).tiff in Resources */,
 				186460701F5BDE52007A8E01 /* ad-11 (dragged).tiff in Resources */,
 				186460931F5BDE52007A8E01 /* ydn-15 (dragged).tiff in Resources */,
+				1829CB301F5C07CE0099EF6B /* direction_notify.png in Resources */,
 				1864606A1F5BDE52007A8E01 /* bql-3 (dragged).tiff in Resources */,
 				186460831F5BDE52007A8E01 /* tr-17 (dragged).tiff in Resources */,
 				186460621F5BDE52007A8E01 /* js-1 (dragged).tiff in Resources */,
