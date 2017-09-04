@@ -13,10 +13,11 @@
 #import <string>
 #define MAX_NODE_COUNT (3)
 
-#define RESET_BUTTON_NAME @"resetButton"
-#define MY_NODE_NAME @"MY_NODE_NAME"
+#define RESET_BUTTON_NAME @"resetButton_1"
+#define MY_NODE_NAME @"MY_NODE_NAME_2"
+#define OPTION_NODE_NAME @"OPTION_NODE_NAME_3"
 #define GUESS_Z_POS (100)
-
+#define LABEL_Z_POS (100)
 @interface NSMutableArray (my_Shuffling)
 - (void)myshuffle;
 @end
@@ -60,6 +61,7 @@
     SKSpriteNode* directionNotifyNode_;
     
     BOOL guessMode_;
+    SKNode* guessContainerNode_;
 }
 @end
 
@@ -76,31 +78,33 @@
         noticelabel_.fontName =  [UIFont boldSystemFontOfSize:20.f].fontName;
         noticelabel_.fontColor = UIColor.whiteColor;
         noticelabel_.position = CGPointMake(noticelabel_.frame.size.width*0.5, noticelabel_.fontSize * 0.55);
+        noticelabel_.zPosition = LABEL_Z_POS;
         
         numberLabel_ = [[SKLabelNode labelNodeWithText:@"0"] retain];
         numberLabel_.fontSize = noticelabel_.fontSize;
         numberLabel_.fontName = noticelabel_.fontName;
         numberLabel_.fontColor = noticelabel_.fontColor;
-        
+        numberLabel_.zPosition = LABEL_Z_POS;
         
         foundNoticeLabel_ = [[SKLabelNode labelNodeWithText:@"已找到:"] retain];
         foundNoticeLabel_.fontSize = noticelabel_.fontSize;
         foundNoticeLabel_.fontName =  noticelabel_.fontName;
         foundNoticeLabel_.fontColor = noticelabel_.fontColor;
-
+        foundNoticeLabel_.zPosition = LABEL_Z_POS;
         
         
         foundNumberLabel_ = [[SKLabelNode labelNodeWithText:@"0"] retain];
         foundNumberLabel_.fontSize = noticelabel_.fontSize;
         foundNumberLabel_.fontName =  noticelabel_.fontName;
         foundNumberLabel_.fontColor = noticelabel_.fontColor;
-  
+        foundNumberLabel_.zPosition = LABEL_Z_POS;
         
         resetButton_ = [[SKSpriteNode alloc] initWithImageNamed:@"reset.png"];
         resetButton_.size = CGSizeMake(40, 40);
         resetButton_.userInteractionEnabled = false;
         resetButton_.position = CGPointMake([UIScreen mainScreen].bounds.size.width -  resetButton_.size.width*0.6, [UIScreen mainScreen].bounds.size.height -  resetButton_.size.height*0.6);
         resetButton_.name = RESET_BUTTON_NAME;
+        resetButton_.zPosition = LABEL_Z_POS;
         
         [self setNodeNumer:0];
         //currentRemainAnchorCount_ = 0;
@@ -123,6 +127,8 @@
         directionNotifyNode_.hidden = NO;
         
         guessMode_ = NO;
+        
+        guessContainerNode_= nil;
         
     }
     return self;
@@ -255,7 +261,7 @@
 }
 
 - (void)update:(CFTimeInterval)currentTime {
-    if (!directionNotifyNode_.hidden)
+    if (!directionNotifyNode_.hidden || guessMode_)
         return;
     static NSTimeInterval lastCreateTime = 0;
     NSTimeInterval now = [[NSDate  date]timeIntervalSince1970];
@@ -306,10 +312,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
     simd_float4x4 translation = matrix_identity_float4x4;
     translation.columns[3].z = -2.5 - randomFloat(0.0, 1.0);
-    //translation.columns[3].z = -0.5;
+    //translation.columns[3].z = -1.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
-    
+    //transform = translation;
     // Create an anchor
     ARAnchor* anchor = [[[ARAnchor alloc]initWithTransform:transform] autorelease];
     
@@ -329,12 +335,37 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     if (hitNodes.count == 0)
         return;
     
-    if (guessMode_)
-        return;
-    
     SKNode* hitNode = hitNodes.firstObject;
     if (hitNode == nil)
         return;
+    
+    if (guessMode_)
+    {
+        if ([hitNode.name hasPrefix:OPTION_NODE_NAME])
+        {
+            [self optionSelected:hitNode];
+            [guessContainerNode_ runAction:
+             [SKAction sequence:@[
+                                  [SKAction waitForDuration:2.0],
+                                  [SKAction runBlock:^{
+                 for (SKNode* node in guessContainerNode_.children)
+                 {
+                     [node runAction:[SKAction fadeOutWithDuration:0.5]];
+                 }
+             }],
+                                  [SKAction waitForDuration:1.0],
+                                  [SKAction runBlock:^{
+                 [guessContainerNode_ removeFromParent];
+                 [guessContainerNode_ release];
+                 guessContainerNode_ = nil;
+                 guessMode_ = NO;
+             }],
+                                  ]]];
+        }
+        return;
+    }
+    
+
     
     if ([hitNode.name isEqualToString:RESET_BUTTON_NAME])
     {
@@ -347,9 +378,9 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         distanceNotifyNode_.alpha = 0;
         [distanceNotifyNode_ removeAllActions];
         float currentlength = MAX(hitNode.frame.size.width, hitNode.frame.size.height);
-        float screensize = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+        float screensize = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*[UIScreen mainScreen].scale;
         float rate = currentlength/ screensize;
-        if (rate < 0.5)
+        if (rate < 0.4)
         {
             [self showNotifyForDistance];
             return;
@@ -357,6 +388,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         [self touchSuccess:hitNode];
         return;
     }
+
     /*
     if (![self.view isKindOfClass:[ARSKView class]]) {
         return;
@@ -383,8 +415,40 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
   */
 }
 
+-(void)optionSelected:(SKNode*) hitNode
+{
+    NSAssert([hitNode.name hasPrefix:OPTION_NODE_NAME], @"getGifIndexByNodeName data error");
+    NSString* string = [hitNode.name substringFromIndex:OPTION_NODE_NAME.length];
+    int optionsIndex = string.intValue;
+    BOOL success = NO;
+    if (optionsIndex == 1)
+        success = YES;
+    
+    SKSpriteNode* optionNode = (SKSpriteNode*)hitNode;
+    if (![optionNode isKindOfClass:[SKSpriteNode class]])
+        return;
+    if (!success)
+        optionNode.texture = [SKTexture textureWithImageNamed:@"error.png"];
+    else
+    {
+        for (SKSpriteNode* node in guessContainerNode_.children)
+        {
+            if ([node isKindOfClass:[SKSpriteNode class]] && [node.name hasPrefix:MY_NODE_NAME])
+                node.colorBlendFactor = 0;
+        }
+        
+        optionNode.texture = [SKTexture textureWithImageNamed:@"success.png"];
+    }
+        
+}
+
 -(void)touchSuccess:(SKNode*) hitNode
 {
+    [guessContainerNode_ removeFromParent];
+    [guessContainerNode_ release];
+    guessContainerNode_ = [[SKNode node] retain];
+    [self addChild:guessContainerNode_];
+    guessContainerNode_.zPosition = GUESS_Z_POS;
     guessMode_ = YES;
     int gifIndex = [self getGifIndexByNodeName:hitNode.name];
     
@@ -392,8 +456,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     newNode.position = hitNode.position;
     newNode.yScale = hitNode.yScale;
     newNode.xScale = hitNode.xScale;
-    newNode.zPosition = GUESS_Z_POS;
-    [self addChild:newNode];
+    [guessContainerNode_ addChild:newNode];
     
     
     ARAnchor* anchor = nodeTypeAnchorDict_[@(gifIndex)];
@@ -405,27 +468,70 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         }
         
         [sceneView.session removeAnchor:anchor];
-        [hitNode removeFromParent];
-        [nodeTypeAnchorDict_ removeObjectForKey:@(gifIndex)];
-        [self setNodeNumer:nodeNumber_-1];
-        [self setSuccessNodeNumer:successedAnchorCount_+1];
-
     }
+    //[self pauseTrack];
+    [nodeTypeAnchorDict_ removeObjectForKey:@(gifIndex)];
+    [self setNodeNumer:nodeNumber_-1];
+    [self showGuessView: newNode];
+    [hitNode removeFromParent];
+    [self setSuccessNodeNumer:successedAnchorCount_+1];
+    
     
 }
 
 
--(void)showGuessView:(SKSpriteNode*)toGuessNode
+-(void)showGuessView:(SKNode*)guessNode
 {
     //bezier curve
     
-    float targetNodeHeight = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.8;
+    SKSpriteNode* toGuessNode = (SKSpriteNode*)guessNode;
+    if (![toGuessNode isKindOfClass:[SKSpriteNode class]])
+        return;
+    
+    float targetNodeHeight = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.65*[UIScreen mainScreen].scale;
+    
     
     float guessNodeHeight = toGuessNode.texture.size.height;
     
-    22222
+    float scale = targetNodeHeight / guessNodeHeight;
     
+    CGPoint position;
+    position.x = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.25;
+    position.y = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.5;
     
+    float duration = 0.8;
+    CGMutablePathRef cgpath = CGPathCreateMutable();
+    CGPoint startingPoint = guessNode.position;
+    CGPoint controlPoint1 = CGPointMake((guessNode.position.x + position.x)*0.5, [UIScreen mainScreen].bounds.size.height*5.5);
+    CGPoint endingPoint = position;
+    CGPathMoveToPoint(cgpath, NULL, startingPoint.x, startingPoint.y);
+    CGPathAddCurveToPoint(cgpath, NULL, controlPoint1.x, controlPoint1.y,
+                          controlPoint1.x, controlPoint1.y,
+                          endingPoint.x, endingPoint.y);
+    SKAction *enemyCurve = [SKAction followPath:cgpath asOffset:NO orientToPath:NO duration:duration];
+    SKAction* scaleAction = [SKAction scaleTo:scale duration:duration];
+    //SKAction* moveAction = [SKAction moveTo:position duration:duration];
+    SKAction* groupAction = [SKAction group:@[scaleAction, enemyCurve]];
+    groupAction.timingMode = SKActionTimingEaseIn;
+    SKAction* blockAction = [SKAction runBlock:^{
+        for (int i= 0; i<4; i++)
+        {
+            SKSpriteNode* optionNode = [SKSpriteNode spriteNodeWithImageNamed:@"options.png"];
+            optionNode.yScale = optionNode.xScale = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.4/optionNode.texture.size.width;
+            
+            optionNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.75, (i*0.6/3.0+0.2)*MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height));
+            
+            [guessContainerNode_ addChild:optionNode];
+            optionNode.name = [NSString stringWithFormat:@"%@%d", OPTION_NODE_NAME, i];
+            
+            optionNode.alpha = 0.f;
+            SKAction* fade = [SKAction fadeAlphaTo:1.0 duration:0.3];
+            fade.timingMode = SKActionTimingEaseIn;
+            [optionNode runAction:fade];
+        }
+    }];
+    [toGuessNode runAction:[SKAction sequence:@[groupAction, blockAction]]];
+
 }
 
 - (void)showNotifyForDistance
@@ -438,6 +544,14 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 - (void) resetTrack
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:RESET_ARKIT_TRACK_FROM_SCENE object:nil];
+}
+-(void) resumeTrack
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:RESUME_ARKIT_TRACK_FROM_SCENE object:nil];
+}
+-(void) pauseTrack
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:PAUSE_ARKIT_TRACK_FROM_SCENE object:nil];
 }
 - (void) resetCount
 {
@@ -461,6 +575,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     [nodeTypeArray_ release];
     [distanceNotifyNode_ release];
     [directionNotifyNode_ release];
+    [guessContainerNode_ release];
     [super dealloc];
 }
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame;

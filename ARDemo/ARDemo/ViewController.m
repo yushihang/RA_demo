@@ -40,6 +40,8 @@
     [self.sceneView presentScene:scene_];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTrackWithClear) name:RESET_ARKIT_TRACK_FROM_SCENE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pauseTrack) name:PAUSE_ARKIT_TRACK_FROM_SCENE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumeTrack) name:RESUME_ARKIT_TRACK_FROM_SCENE object:nil];
     
     motionManager_ = [[CMMotionManager alloc] init];
     motionManager_.accelerometerUpdateInterval = 0.1;       // 0.01 = 1s/100 = 100Hz
@@ -51,9 +53,20 @@
     [self resetTrackWithOption:ARSessionRunOptionResetTracking|ARSessionRunOptionRemoveExistingAnchors];
     [scene_ resetCount];
 }
+
+- (void) pauseTrack
+{
+    [self.sceneView.session pause];
+}
+
+- (void) resumeTrack
+{
+    [self resetTrackWithOption:0];
+}
+
 - (void) resetTrack
 { 
-    [self.sceneView.session pause];
+    [self pauseTrack];
     if ([motionManager_ isAccelerometerAvailable])
     {
         [motionManager_ startAccelerometerUpdatesToQueue:motionQueue_ withHandler:^(CMAccelerometerData *accelerometerData, NSError *error){
@@ -112,7 +125,7 @@
     [super viewWillDisappear:animated];
     
     // Pause the view's session
-    [self.sceneView.session pause];
+    [self pauseTrack];
 }
 
 - (void)didReceiveMemoryWarning {
