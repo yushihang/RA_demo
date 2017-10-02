@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "GLOBAL">
+         <PersistentStrings>
+            <PersistentString
+               value = "node.color">
+            </PersistentString>
+            <PersistentString
+               value = "node.colorBlendFactor">
+            </PersistentString>
+            <PersistentString
+               value = "gifDataDictionary_">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "::-[Scene touchSuccess:](SKNode *):Scene.mm">
+         <PersistentStrings>
+            <PersistentString
+               value = "nodeAnchorDict_">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "::-[Scene generateSKSpriteNode:](int):Scene.mm">
+      </ContextState>
+      <ContextState
+         contextName = "::-[Scene touchesBegan:withEvent:](NSSet *, UIEvent *):Scene.mm">
+      </ContextState>
+      <ContextState
+         contextName = "(null):(null)">
+      </ContextState>
+      <ContextState
+         contextName = "-[ARData updateGuessData]:ARData.m">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

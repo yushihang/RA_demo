@@ -5,7 +5,9 @@
 //  Created by apple on 02/09/2017.
 //  Copyright © 2017 fish. All rights reserved.
 //
-
+#if !__has_feature(objc_arc)
+#error "open arc please"
+#endif
 #import "ViewController.h"
 #import "Scene.h"
 #import "UIAlertView+Blocks.h"
@@ -23,10 +25,23 @@
 
 
 @implementation ViewController
-
+// Add this method
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        [self prefersStatusBarHidden];
+        [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+    }
+    else
+    {
+        // iOS 6
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    }
     // Set the view's delegate
     self.sceneView.delegate = self;
     
@@ -35,7 +50,7 @@
     self.sceneView.showsNodeCount = YES;
     
     // Load the SKScene from 'Scene.sks'
-    scene_ = [(Scene *)[Scene sceneWithSize:self.sceneView.bounds.size] retain];
+    scene_ = (Scene *)[Scene sceneWithSize:self.sceneView.bounds.size];
     // Present the scene
     [self.sceneView presentScene:scene_];
     
@@ -97,12 +112,12 @@
 
     
     if (ARWorldTrackingConfiguration.isSupported) {
-        ARWorldTrackingConfiguration*  configuration = [[[ARWorldTrackingConfiguration alloc] init] autorelease];
+        ARWorldTrackingConfiguration*  configuration = [[ARWorldTrackingConfiguration alloc] init];
         //configuration.planeDetection = .horizontal
         [self.sceneView.session runWithConfiguration:configuration options:options];
     }
     else{
-        AROrientationTrackingConfiguration* configuration = [[[AROrientationTrackingConfiguration alloc] init] autorelease];
+        AROrientationTrackingConfiguration* configuration = [[AROrientationTrackingConfiguration alloc] init];
         [self.sceneView.session runWithConfiguration:configuration options:options];
     }
 }
@@ -162,10 +177,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [scene_ release];
-    [motionManager_ release];
-    [motionQueue_ release];
-    [super dealloc];
 }
 
 - (void)view:(ARSKView *)view didRemoveNode:(SKNode *)node forAnchor:(ARAnchor *)anchor;

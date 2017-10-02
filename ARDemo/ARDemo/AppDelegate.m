@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ARData.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +18,48 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    /*
+     按照策划案，每天最多只能猜6次，并且成功次数只能3次
+     建议每次开始都重新请求一次数据
+     int remainGuessCount 本次还可以猜的次数
+     array  guessInfo 每次传递若干个如下信息的数组
+     {
+     int fighterID 对应ar_res/anim下的目录名
+     array(string) guessNames 4个备选名字
+     int answerIndex [0-3]
+     }
+     
+     */
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    dict[@"remainGuessCount"] = @(3);
+    dict[@"guessInfo"] = [NSMutableArray array];
+    
+    {
+        NSMutableDictionary* tempDict = [NSMutableDictionary dictionary];
+        tempDict[@"fighterID"] = @(3);
+        tempDict[@"answerIndex"] = @(2);
+        tempDict[@"guessNames"] = @[@"知道火舞", @"不知水舞", @"不知火舞", @"知道水舞"];
+        [dict[@"guessInfo"] addObject:tempDict];
+    }
+    
+    {
+        NSMutableDictionary* tempDict = [NSMutableDictionary dictionary];
+        tempDict[@"fighterID"] = @(2);
+        tempDict[@"answerIndex"] = @(1);
+        tempDict[@"guessNames"] = @[@"七神", @"八神", @"九神", @"十神"];
+        [dict[@"guessInfo"] addObject:tempDict];
+    }
+    
+    {
+        NSMutableDictionary* tempDict = [NSMutableDictionary dictionary];
+        tempDict[@"fighterID"] = @(1);
+        tempDict[@"answerIndex"] = @(0);
+        tempDict[@"guessNames"] = @[@"坂崎良", @"板崎良", @"板琦良", @"坂琦良"];
+        [dict[@"guessInfo"] addObject:tempDict];
+    }
+
+    [[ARData getInstance] setFighterGuessInfo:dict];
     return YES;
 }
 

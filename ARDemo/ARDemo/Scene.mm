@@ -5,13 +5,14 @@
 //  Created by apple on 02/09/2017.
 //  Copyright © 2017 fish. All rights reserved.
 //
-
+#if !__has_feature(objc_arc)
+#error "open arc please"
+#endif
 #import "Scene.h"
 #import <simd/types.h>
 #import <SceneKit/SceneKit.h>
-#import <unordered_map>
-#import <string>
-#define MAX_NODE_COUNT (3)
+#import "ARData.h"
+//#define MAX_NODE_COUNT (3)
 
 #define RESET_BUTTON_NAME @"resetButton_1"
 #define MY_NODE_NAME @"MY_NODE_NAME_2"
@@ -53,15 +54,18 @@
     int successedAnchorCount_;
     SKSpriteNode* resetButton_;
     NSMutableDictionary<NSNumber*, ARAnchor* >* nodeTypeAnchorDict_;
-    NSMutableArray<NSNumber*>* nodeTypeArray_;
+    //NSMutableArray<NSNumber*>* nodeTypeArray_;
     
-    std::unordered_map<int, std::pair<std::string, int>> gifDataMap_;
+    
+    NSMutableDictionary* gifDataDictionary_;
     
     SKSpriteNode* distanceNotifyNode_;
     SKSpriteNode* directionNotifyNode_;
     
     BOOL guessMode_;
     SKNode* guessContainerNode_;
+    
+    matrix_float4x4 cameraFrameTransform_;
 }
 @end
 
@@ -73,27 +77,27 @@
     self = [super initWithSize:size];
     if (self != nil)
     {
-        noticelabel_ = [[SKLabelNode labelNodeWithText:@"剩余格斗家个数:"] retain];
+        noticelabel_ = [SKLabelNode labelNodeWithText:@"剩余格斗家个数:"];
         noticelabel_.fontSize = 15;
         noticelabel_.fontName =  [UIFont boldSystemFontOfSize:20.f].fontName;
         noticelabel_.fontColor = UIColor.whiteColor;
         noticelabel_.position = CGPointMake(noticelabel_.frame.size.width*0.5, noticelabel_.fontSize * 0.55);
         noticelabel_.zPosition = LABEL_Z_POS;
         
-        numberLabel_ = [[SKLabelNode labelNodeWithText:@"0"] retain];
+        numberLabel_ = [SKLabelNode labelNodeWithText:@"0"];
         numberLabel_.fontSize = noticelabel_.fontSize;
         numberLabel_.fontName = noticelabel_.fontName;
         numberLabel_.fontColor = noticelabel_.fontColor;
         numberLabel_.zPosition = LABEL_Z_POS;
         
-        foundNoticeLabel_ = [[SKLabelNode labelNodeWithText:@"已找到:"] retain];
+        foundNoticeLabel_ = [SKLabelNode labelNodeWithText:@"已找到:"];
         foundNoticeLabel_.fontSize = noticelabel_.fontSize;
         foundNoticeLabel_.fontName =  noticelabel_.fontName;
         foundNoticeLabel_.fontColor = noticelabel_.fontColor;
         foundNoticeLabel_.zPosition = LABEL_Z_POS;
         
         
-        foundNumberLabel_ = [[SKLabelNode labelNodeWithText:@"0"] retain];
+        foundNumberLabel_ = [SKLabelNode labelNodeWithText:@"0"];
         foundNumberLabel_.fontSize = noticelabel_.fontSize;
         foundNumberLabel_.fontName =  noticelabel_.fontName;
         foundNumberLabel_.fontColor = noticelabel_.fontColor;
@@ -110,11 +114,11 @@
         //currentRemainAnchorCount_ = 0;
         [self setSuccessNodeNumer:0];
         
-        nodeTypeAnchorDict_ = [[NSMutableDictionary alloc]initWithCapacity:MAX_NODE_COUNT];
+        nodeTypeAnchorDict_ = [[NSMutableDictionary alloc]initWithCapacity:[ARData getInstance].totalFighterCount];
         
-        nodeTypeArray_ = [[NSMutableArray alloc]initWithCapacity:MAX_NODE_COUNT];
+        //nodeTypeArray_ = [[NSMutableArray alloc]initWithCapacity:[ARData getInstance].totalFighterCount];
         
-        [self resetNodeTypeArray];
+        //[self resetNodeTypeArray];
         [self initGifDataMap];
         
         distanceNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"distance_notify.png"];
@@ -130,6 +134,9 @@
         
         guessContainerNode_= nil;
         
+        cameraFrameTransform_ = matrix_identity_float4x4;
+        [self resetTrack];
+        
     }
     return self;
     
@@ -137,48 +144,78 @@
 
 -(void)initGifDataMap
 {
-    gifDataMap_[0] = std::pair<std::string, int>("dz", 12);
-    gifDataMap_[1] = std::pair<std::string, int>("js", 6);
-    gifDataMap_[2] = std::pair<std::string, int>("bql", 6);
-    gifDataMap_[3] = std::pair<std::string, int>("ad", 13);
-    gifDataMap_[4] = std::pair<std::string, int>("tr", 18);
-    gifDataMap_[5] = std::pair<std::string, int>("ydn", 16);
-}
--(void)resetNodeTypeArray
-{
-    [nodeTypeArray_  removeAllObjects];
-    for (int i=0; i<6; i++)
-        [nodeTypeArray_ addObject:@(i)];
-    [nodeTypeArray_ myshuffle];
+    gifDataDictionary_ = [NSMutableDictionary dictionary];
+    
+    NSString *file = @"";
+    NSString *frameFile = @"";
+    BOOL isDir = YES;
+    BOOL exist = YES;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ar_res/anim" ofType:@""];
+    for (int i=1; ;i++)
+    {
+        file = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%d", i]];
+        NSMutableArray* array = [NSMutableArray array];
+        exist = [[NSFileManager defaultManager] fileExistsAtPath:file isDirectory:&isDir];
+        if (!exist || !isDir)
+            break;
+        gifDataDictionary_[@(i)] = array;
+        for (int k=1; ;k++)
+        {
+            frameFile = [file stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.png", k]];
+            exist = [[NSFileManager defaultManager] fileExistsAtPath:frameFile isDirectory:&isDir];
+            if (!exist || isDir)
+                break;
+            [array addObject:frameFile];
+        }
+        
+    }
+    
+    int a = 1;
     
 }
-
+/*
+ -(void)resetNodeTypeArray
+ {
+ 
+ [nodeTypeArray_  removeAllObjects];
+ for (int i=0; i<6; i++)
+ [nodeTypeArray_ addObject:@(i)];
+ [nodeTypeArray_ myshuffle];
+ 
+ }
+ */
 -(SKNode*) generateSKSpriteNode:(int)gifIndex_orig
 {
     int gifIndex = gifIndex_orig;
-    if (gifIndex == -1)
-    {
-        if (nodeTypeArray_.count > 0)
-        {
-            gifIndex = [nodeTypeArray_ lastObject].intValue;
-            [nodeTypeArray_ removeLastObject];
-            
-        }
-    }
-    if (gifIndex >= 6 || gifIndex < 0)
-        gifIndex = arc4random() % 6;
-    auto& pair = gifDataMap_[gifIndex];
+    /*
+     if (gifIndex == -1)
+     {
+     if (nodeTypeArray_.count > 0)
+     {
+     gifIndex = [nodeTypeArray_ lastObject].intValue;
+     [nodeTypeArray_ removeLastObject];
+     
+     }
+     }
+     if (gifIndex >= 6 || gifIndex < 0)
+     gifIndex = arc4random() % 6;
+     */
+    NSArray* gifFramePathArray = [gifDataDictionary_ objectForKey:@(gifIndex)];
+    if (![gifFramePathArray isKindOfClass:[NSArray class]])
+        return nil;
+    if (gifFramePathArray.count == 0)
+        return nil;
     
-    
-    NSMutableArray* frames = [NSMutableArray arrayWithCapacity:pair.second];
-    for (int i=0 ; i<pair.second; i++)
+    NSMutableArray* frames = [NSMutableArray arrayWithCapacity:gifFramePathArray.count];
+    for (NSString* texName in gifFramePathArray)
     {
-        NSString* texName = [NSString stringWithFormat:@"%s-%d (dragged).tiff", pair.first.c_str(), i+1];
+        if (![texName isKindOfClass:[NSString class]])
+            return nil;
         SKTexture* texture = [SKTexture textureWithImageNamed:texName];
         [frames addObject:texture];
     }
     
-    SKSpriteNode* node = [SKSpriteNode spriteNodeWithImageNamed:[NSString stringWithFormat:@"%s-1 (dragged).tiff", pair.first.c_str()]];
+    SKSpriteNode* node = [SKSpriteNode spriteNodeWithImageNamed:gifFramePathArray[0]];
     
     SKAction* animation = [SKAction animateWithTextures:frames timePerFrame:0.08];
     // Change the frame per 0.2 sec
@@ -207,8 +244,18 @@
     return gifIndex;
 }
 - (SKNode *)view:(ARSKView *)view nodeForAnchor:(ARAnchor *)anchor {
+    SKNode* emptyNode = nil;//[SKNode node];
     // Create and configure a node for the anchor added to the view's session.
-    SKNode* node = [self generateSKSpriteNode:-1];
+    if ([ARData getInstance].currentCreateIndex >= [ARData getInstance].totalFighterCount)
+        return emptyNode;
+    NSArray<ARGuessData*>* guessDataArray = [ARData getInstance].guessDataArray;
+    if ([ARData getInstance].currentCreateIndex >= guessDataArray.count)
+        return emptyNode;
+    ARGuessData* guessData = [guessDataArray objectAtIndex:[ARData getInstance].currentCreateIndex];
+    SKNode* node = [self generateSKSpriteNode:guessData.fighterId];
+    if (node == nil)
+        return emptyNode;
+    [ARData getInstance].currentCreateIndex++;
     int gifIndex = [self getGifIndexByNodeName:node.name];
     nodeTypeAnchorDict_[@(gifIndex)] = anchor;
     return node;
@@ -232,7 +279,7 @@
     }
     
     sceneView.session.delegate = self;
-
+    
 }
 
 - (void)setNodeNumer:(int)number{
@@ -251,10 +298,10 @@
 {
     numberLabel_.text = [NSString stringWithFormat:@"%d", nodeNumber_];
     foundNumberLabel_.text = [NSString stringWithFormat:@"%d", successedAnchorCount_];
-
+    
     numberLabel_.position = CGPointMake(noticelabel_.frame.size.width+noticelabel_.frame.origin.x + 10 + numberLabel_.frame.size.width*0.5, noticelabel_.position.y);
     
-
+    
     foundNoticeLabel_.position = CGPointMake(numberLabel_.frame.size.width+numberLabel_.frame.origin.x + 10 + foundNoticeLabel_.frame.size.width*0.5, noticelabel_.position.y);
     
     foundNumberLabel_.position = CGPointMake(foundNoticeLabel_.frame.size.width+foundNoticeLabel_.frame.origin.x + 10 + foundNumberLabel_.frame.size.width*0.5, noticelabel_.position.y);
@@ -268,7 +315,9 @@
     if (now - lastCreateTime < 5)
         return;
     // Called before each frame is rendered
-    int shouldCreateCount = MAX_NODE_COUNT - nodeNumber_ - successedAnchorCount_;
+    
+    
+    int shouldCreateCount = [ARData getInstance].totalFighterCount - nodeNumber_ - successedAnchorCount_;
     for (int i=0; i<shouldCreateCount; i++){
         [self createNodeAnchor];
         [self setNodeNumer:nodeNumber_+1];
@@ -295,7 +344,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     if (![sceneView isKindOfClass:[ARSKView class]]){
         return;
     }
-
+    
     
     // Define 360º in radians
     float _360degrees = 2.0 * M_PI;
@@ -307,7 +356,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
     // Combine both rotation matrices
     simd_float4x4 rotation = simd_mul(rotateX, rotateY);
-
+    
     
     // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
     simd_float4x4 translation = matrix_identity_float4x4;
@@ -315,9 +364,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     //translation.columns[3].z = -1.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
-    //transform = translation;
+    transform = translation;
+    translation.columns[3].z = -1.0;
     // Create an anchor
-    ARAnchor* anchor = [[[ARAnchor alloc]initWithTransform:transform] autorelease];
+    ARAnchor* anchor = [[ARAnchor alloc]initWithTransform:transform];
     
     // Add the anchor
     [sceneView.session addAnchor:anchor];
@@ -356,7 +406,6 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
                                   [SKAction waitForDuration:1.0],
                                   [SKAction runBlock:^{
                  [guessContainerNode_ removeFromParent];
-                 [guessContainerNode_ release];
                  guessContainerNode_ = nil;
                  guessMode_ = NO;
              }],
@@ -365,7 +414,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         return;
     }
     
-
+    
     
     if ([hitNode.name isEqualToString:RESET_BUTTON_NAME])
     {
@@ -377,6 +426,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     {
         distanceNotifyNode_.alpha = 0;
         [distanceNotifyNode_ removeAllActions];
+        
+        
         float currentlength = MAX(hitNode.frame.size.width, hitNode.frame.size.height);
         float screensize = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*[UIScreen mainScreen].scale;
         float rate = currentlength/ screensize;
@@ -388,31 +439,31 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         [self touchSuccess:hitNode];
         return;
     }
-
+    
     /*
-    if (![self.view isKindOfClass:[ARSKView class]]) {
-        return;
-    }
-
-    
-    ARSKView *sceneView = (ARSKView *)self.view;
-    ARFrame *currentFrame = [sceneView.session currentFrame];
-    
-    // Create anchor using the camera's current position
-    if (currentFrame) {
-        
-        // Create a transform with a translation of 0.2 meters in front of the camera
-        matrix_float4x4 translation = matrix_identity_float4x4;
-        translation.columns[3].z = -0.6;
-        //translation.columns[3].x = -0.5;
-        //translation.columns[3].y = -0.5;
-        matrix_float4x4 transform = matrix_multiply(currentFrame.camera.transform, translation);
-        
-        // Add a new anchor to the session
-        ARAnchor *anchor = [[ARAnchor alloc] initWithTransform:transform];
-        [sceneView.session addAnchor:anchor];
-    }
-  */
+     if (![self.view isKindOfClass:[ARSKView class]]) {
+     return;
+     }
+     
+     
+     ARSKView *sceneView = (ARSKView *)self.view;
+     ARFrame *currentFrame = [sceneView.session currentFrame];
+     
+     // Create anchor using the camera's current position
+     if (currentFrame) {
+     
+     // Create a transform with a translation of 0.2 meters in front of the camera
+     matrix_float4x4 translation = matrix_identity_float4x4;
+     translation.columns[3].z = -0.6;
+     //translation.columns[3].x = -0.5;
+     //translation.columns[3].y = -0.5;
+     matrix_float4x4 transform = matrix_multiply(currentFrame.camera.transform, translation);
+     
+     // Add a new anchor to the session
+     ARAnchor *anchor = [[ARAnchor alloc] initWithTransform:transform];
+     [sceneView.session addAnchor:anchor];
+     }
+     */
 }
 
 -(void)optionSelected:(SKNode*) hitNode
@@ -439,14 +490,13 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         
         optionNode.texture = [SKTexture textureWithImageNamed:@"success.png"];
     }
-        
+    
 }
 
 -(void)touchSuccess:(SKNode*) hitNode
 {
     [guessContainerNode_ removeFromParent];
-    [guessContainerNode_ release];
-    guessContainerNode_ = [[SKNode node] retain];
+    guessContainerNode_ = [SKNode node];
     [self addChild:guessContainerNode_];
     guessContainerNode_.zPosition = GUESS_Z_POS;
     guessMode_ = YES;
@@ -531,13 +581,13 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         }
     }];
     [toGuessNode runAction:[SKAction sequence:@[groupAction, blockAction]]];
-
+    
 }
 
 - (void)showNotifyForDistance
 {
     [distanceNotifyNode_ removeAllActions];
-
+    
     NSArray* array = [NSArray arrayWithObjects:[SKAction fadeAlphaTo:1 duration:0.1], [SKAction waitForDuration:1],[SKAction fadeAlphaTo:0 duration:1], nil];
     [distanceNotifyNode_ runAction:[SKAction sequence:array]];
 }
@@ -556,10 +606,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 - (void) resetCount
 {
     [self setNodeNumer:0];
-
+    
     [nodeTypeAnchorDict_ removeAllObjects];
-    [self resetNodeTypeArray];
-
+    //[self resetNodeTypeArray];
+    
     //currentRemainTAnchorCount_ = 0;
 }
 
@@ -567,20 +617,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 
 - (void)dealloc
 {
-    [noticelabel_ release];
-    [numberLabel_ release];
-    [foundNoticeLabel_ release];
-    [foundNumberLabel_ release];
-    [nodeTypeAnchorDict_ release];
-    [nodeTypeArray_ release];
-    [distanceNotifyNode_ release];
-    [directionNotifyNode_ release];
-    [guessContainerNode_ release];
-    [super dealloc];
 }
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame;
 {
-    
+    cameraFrameTransform_ = frame.camera.transform;
 }
 
 /**
@@ -620,4 +660,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 {
     directionNotifyNode_.hidden = !visible;
 }
+
+
+
+
+
 @end
+
