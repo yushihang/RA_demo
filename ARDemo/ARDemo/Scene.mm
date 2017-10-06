@@ -17,10 +17,11 @@
 //#define MAX_NODE_COUNT (3)
 
 #define RESET_BUTTON_NAME @"resetButton_1"
-#define MY_NODE_NAME @"MY_NODE_NAME_2"
+#define MY_NODE_NAME @"MY_NODE_NAME___"
 #define OPTION_NODE_NAME @"OPTION_NODE_NAME_3"
+#define CORRECT_ANSWER @"CORRECT_ANSWER___"
 #define GUESS_Z_POS (100)
-#define LABEL_Z_POS (100)
+#define LABEL_Z_POS (1001)
 #define TOUCH_RATE (0.1) //0.4
 @interface NSMutableArray (my_Shuffling)
 - (void)myshuffle;
@@ -132,6 +133,7 @@
         titleNode_.xScale = titleNode_.yScale = [UIScreen mainScreen].bounds.size.width / titleNode_.size.width ;
         titleNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - titleNode_.frame.size.height*0.5);
         titleNode_.hidden = NO;
+        titleNode_.zPosition = 1000;
         
         closeNode_ = [[TouchableSpriteNode alloc]initWithImageNamed:@"ar_res/ui/close.png"];
         closeNode_.xScale = closeNode_.yScale = [UIScreen mainScreen].bounds.size.width*0.12 / closeNode_.size.width ;
@@ -139,10 +141,11 @@
         closeNode_.hidden = NO;
         closeNode_.normalImage = @"ar_res/ui/close.png";
         closeNode_.highlightImage = @"ar_res/ui/close_highlight.png";
-        closeNode_.zPosition = LABEL_Z_POS;
+        closeNode_.zPosition = 2000;
         
         
         foundNoticeLabel_ = [SKLabelNode labelNodeWithText:@"今日已找到格斗家:"];
+        foundNoticeLabel_.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         foundNoticeLabel_.fontSize = titleNode_.frame.size.height*0.25;
         foundNoticeLabel_.fontName =  [UIFont boldSystemFontOfSize:20.f].fontName;
         foundNoticeLabel_.fontColor = SKColor.whiteColor;
@@ -150,6 +153,7 @@
         
         
         foundNumberLabel_ = [SKLabelNode labelNodeWithText:[NSString stringWithFormat:@"%d/%d", [ARData getInstance].totalFighterCount-[ARData getInstance].remainGuessCount, [ARData getInstance].totalFighterCount]];
+        foundNumberLabel_.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
         foundNumberLabel_.fontSize = foundNoticeLabel_.fontSize;
         foundNumberLabel_.fontName =  foundNoticeLabel_.fontName;
         foundNumberLabel_.fontColor = foundNoticeLabel_.fontColor;
@@ -260,6 +264,34 @@
         node.colorBlendFactor = 1.0f;
     }
     
+    SKSpriteNode* nodeBlue = [SKSpriteNode spriteNodeWithImageNamed:gifFramePathArray[0]];
+    SKAction* animationBlue = [SKAction animateWithTextures:frames timePerFrame:0.08];
+    nodeBlue.shader = [SKShader shaderWithSource:@"\
+                       void main() {\
+                       vec4 val = texture2D(u_texture, v_tex_coord);\
+                       vec3 color = vec3(0.1372, 0.4196, 0.4588)*val.a;\
+                       gl_FragColor = vec4(color, val.a);\
+                       }"];
+    [nodeBlue runAction:[SKAction repeatActionForever:animationBlue]];
+    nodeBlue.zPosition = -1;
+    nodeBlue.position = CGPointMake(nodeBlue.position.x-nodeBlue.frame.size.width*0.015, nodeBlue.position.y);
+    [node addChild:nodeBlue];
+
+    
+    SKSpriteNode* nodeRed = [SKSpriteNode spriteNodeWithImageNamed:gifFramePathArray[0]];
+    SKAction* animationRed = [SKAction animateWithTextures:frames timePerFrame:0.08];
+    nodeRed.shader = [SKShader shaderWithSource:@"\
+                       void main() {\
+                       vec4 val = texture2D(u_texture, v_tex_coord);\
+                       vec3 color = vec3(0.4431, 0.0392, 0.05098)*val.a;\
+                       gl_FragColor = vec4(color, val.a);\
+                       }"];
+    [nodeRed runAction:[SKAction repeatActionForever:animationRed]];
+    nodeRed.zPosition = -1;
+    nodeRed.position = CGPointMake(nodeRed.position.x+nodeRed.frame.size.width*0.015, nodeRed.position.y);
+    [node addChild:nodeRed];
+    
+    
     return node;
 }
 
@@ -331,7 +363,7 @@
     //numberLabel_.position = CGPointMake(noticelabel_.frame.size.width+noticelabel_.frame.origin.x + 10 + numberLabel_.frame.size.width*0.5, noticelabel_.position.y);
     
     
-    foundNoticeLabel_.position = CGPointMake(titleNode_.frame.size.width*0.16f, [UIScreen mainScreen].bounds.size.height - foundNoticeLabel_.frame.size.height*1.0);
+    foundNoticeLabel_.position = CGPointMake(titleNode_.frame.size.width*0.16f, [UIScreen mainScreen].bounds.size.height - foundNoticeLabel_.frame.size.height*0.65);
     
     foundNumberLabel_.position = CGPointMake(foundNoticeLabel_.frame.size.width+foundNoticeLabel_.frame.origin.x + foundNumberLabel_.frame.size.width*0.5, foundNoticeLabel_.position.y);
 }
@@ -347,6 +379,7 @@
     
     
     int shouldCreateCount = [ARData getInstance].totalFighterCount - nodeNumber_ - successedAnchorCount_;
+
     for (int i=0; i<shouldCreateCount; i++){
         [self createNodeAnchor];
         [self setNodeNumer:nodeNumber_+1];
@@ -424,7 +457,16 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         currentTouchableNode_ = (TouchableSpriteNode*)hitNode;
         [currentTouchableNode_ touchesBegan:touches withEvent:event];
     }
-    
+    if (hitNode == closeNode_)
+    {
+        [UIAlertView showWithTitle:@"提示" message:@"需要退出么?" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+            if (1 == buttonIndex)
+            {
+                exit(0);
+            }
+        }];
+        return;
+    }
     if (guessMode_)
     {
         if ([hitNode.name hasPrefix:OPTION_NODE_NAME])
@@ -444,6 +486,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
                  [guessContainerNode_ removeFromParent];
                  guessContainerNode_ = nil;
                  guessMode_ = NO;
+                 resetButton_.hidden = NO;
              }],
                                   ]]];
         }
@@ -476,15 +519,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         return;
     }
     
-    if (hitNode == closeNode_)
-    {
-        [UIAlertView showWithTitle:@"提示" message:@"需要退出么?" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
-            if (1 == buttonIndex)
-            {
-                exit(0);
-            }
-        }];
-    }
+
     /*
      if (![self.view isKindOfClass:[ARSKView class]]) {
      return;
@@ -559,6 +594,9 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     [guessContainerNode_ removeFromParent];
     guessContainerNode_ = [SKNode node];
     [self addChild:guessContainerNode_];
+
+    
+    
     guessContainerNode_.zPosition = GUESS_Z_POS;
     guessMode_ = YES;
     int gifIndex = [self getGifIndexByNodeName:hitNode.name];
@@ -567,7 +605,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     newNode.position = hitNode.position;
     newNode.yScale = hitNode.yScale;
     newNode.xScale = hitNode.xScale;
+    newNode.zPosition = 2;
     [guessContainerNode_ addChild:newNode];
+    
+
     
     
     ARAnchor* anchor = nodeTypeAnchorDict_[@(gifIndex)];
@@ -598,19 +639,29 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     SKSpriteNode* toGuessNode = (SKSpriteNode*)guessNode;
     if (![toGuessNode isKindOfClass:[SKSpriteNode class]])
         return;
+    resetButton_.hidden = YES;
+    float duration = 0.8;
+    //显示竖线分割图案
+    SKSpriteNode* line1Node = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/line_1.png"];
+    line1Node.xScale = line1Node.yScale =  MIN([UIScreen mainScreen].bounds.size.height,[UIScreen mainScreen].bounds.size.width)*0.8 / line1Node.size.height ;
+    line1Node.position = CGPointMake([UIScreen mainScreen].bounds.size.width - line1Node.frame.size.width*1.25, [UIScreen mainScreen].bounds.size.height*0.5);
+    line1Node.alpha = 0;
+    [guessContainerNode_ addChild:line1Node];
+    line1Node.zPosition = 1;
+    [line1Node runAction:[SKAction fadeAlphaTo:1.0 duration:duration*0.5]];
     
-    float targetNodeHeight = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.8;
+    //显示黑色动画
     
+    float targetNodeHeight = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.6;
     
     float guessNodeHeight = toGuessNode.texture.size.height;
     
     float scale = targetNodeHeight / guessNodeHeight;
     
     CGPoint position;
-    position.x = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.25;
-    position.y = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.5;
+    position.x = (line1Node.frame.origin.x + line1Node.frame.size.width*0.113)*0.5;
+    position.y = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.45;
     
-    float duration = 0.8;
     CGMutablePathRef cgpath = CGPathCreateMutable();
     CGPoint startingPoint = guessNode.position;
     CGPoint controlPoint1 = CGPointMake((guessNode.position.x + position.x)*0.5, [UIScreen mainScreen].bounds.size.height*5.5);
@@ -625,12 +676,57 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     SKAction* groupAction = [SKAction group:@[scaleAction, enemyCurve]];
     groupAction.timingMode = SKActionTimingEaseIn;
     SKAction* blockAction = [SKAction runBlock:^{
+        //显示选项
+        toGuessNode.position = position;
+        TouchableSpriteNode* optionNode1 = [TouchableSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/bt_1.png"];
+        optionNode1.yScale = optionNode1.xScale = line1Node.frame.size.width*1.2/optionNode1.size.width;
+        float nodeHeight = optionNode1.frame.size.height;
+        
+        float gap = nodeHeight* 0.3;
+        
+        //请点击选择答案
+        SKSpriteNode* chooseAnswerNode = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/floor1.png"];
+        chooseAnswerNode.yScale = chooseAnswerNode.xScale = optionNode1.xScale;
+        chooseAnswerNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - optionNode1.frame.size.width*0.7, MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.5 + 2*gap+2*nodeHeight);
+        [guessContainerNode_ addChild:chooseAnswerNode];
+        
+        SKLabelNode* label = [SKLabelNode labelNodeWithText:@"请点击选择答案"];
+        label.fontName = [UIFont boldSystemFontOfSize:20].fontName;
+        label.fontSize = nodeHeight*0.5;
+        label.fontColor = UIColor.whiteColor;
+        CGPoint p1 = chooseAnswerNode.position;
+        label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+        p1.y += nodeHeight*0.1;
+        label.position = p1;
+        label.zPosition = chooseAnswerNode.zPosition + 1;
+        [guessContainerNode_ addChild:label];
+        
+
+        //寻找待选答案
+        int figherId = [self getGifIndexByNodeName:toGuessNode.name];
+        ARGuessData* guessData = nil;
+        for (guessData in [ARData getInstance].guessDataArray)
+        {
+            if (guessData.fighterId == figherId)
+                break;
+        }
+        NSAssert(guessData != nil, @"ARGuessData == nil");
+
+        if (guessData == nil)
+            return;
+
+    
         for (int i= 0; i<4; i++)
         {
-            SKSpriteNode* optionNode = [SKSpriteNode spriteNodeWithImageNamed:@"options.png"];
-            optionNode.yScale = optionNode.xScale = MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.4/optionNode.texture.size.width;
+            TouchableSpriteNode* optionNode = [TouchableSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/bt_1.png"];
+            optionNode.normalImage = @"ar_res/ui/bt_1.png";
+            optionNode.highlightImage = @"bt_1_highlight.png";
+            optionNode.yScale = optionNode.xScale = optionNode1.xScale;
             
-            optionNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.75, (i*0.6/3.0+0.2)*MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height));
+            
+
+            optionNode.position = CGPointMake(chooseAnswerNode.position.x,
+                                              chooseAnswerNode.position.y - gap*(i+1) - nodeHeight*(i+1));
             
             [guessContainerNode_ addChild:optionNode];
             optionNode.name = [NSString stringWithFormat:@"%@%d", OPTION_NODE_NAME, i];
@@ -639,9 +735,69 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
             SKAction* fade = [SKAction fadeAlphaTo:1.0 duration:0.3];
             fade.timingMode = SKActionTimingEaseIn;
             [optionNode runAction:fade];
+            
+            
+            //显示待选答案
+            if (i == guessData.answerIndex)
+                optionNode.name = CORRECT_ANSWER;
+            
+            if (i < guessData.guessAnswerStringArray.count)
+            {
+                SKLabelNode* label = [SKLabelNode labelNodeWithText:[guessData.guessAnswerStringArray objectAtIndex:i]];
+                label.fontName = [UIFont boldSystemFontOfSize:20].fontName;
+                label.fontSize = nodeHeight*0.5;
+                label.fontColor = UIColor.whiteColor;
+                label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+                CGPoint p1 = optionNode.position;
+                label.position = p1;
+                label.zPosition = optionNode.zPosition + 1;
+                [guessContainerNode_ addChild:label];
+            }
+            
+
         }
     }];
     [toGuessNode runAction:[SKAction sequence:@[groupAction, blockAction]]];
+    
+    
+    
+    //显示黑色背景
+    SKSpriteNode* backgroundNode = [SKSpriteNode spriteNodeWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.85] size:[UIScreen mainScreen].bounds.size];
+    backgroundNode.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height*0.5);
+    backgroundNode.zPosition = -1;
+    backgroundNode.alpha = 0;
+    [guessContainerNode_ addChild:backgroundNode];
+    [backgroundNode runAction:[SKAction fadeAlphaTo:1.0 duration:duration*0.5]];
+    
+    
+
+    
+    
+    
+    //显示底座
+    SKSpriteNode* floorNode = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/floor_2.png"];
+    floorNode.xScale = floorNode.yScale = 0.4814* MAX([UIScreen mainScreen].bounds.size.height,[UIScreen mainScreen].bounds.size.width) / floorNode.size.width ;
+    CGPoint position1;
+    position1.x = position.x;
+    position1.y = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.20;
+    floorNode.position = position1;
+    floorNode.alpha = 0;
+    [guessContainerNode_ addChild:floorNode];
+    floorNode.zPosition = 1;
+    [floorNode runAction:[SKAction fadeAlphaTo:1.0 duration:duration*0.5]];
+    
+    
+    //显示底座上方的文字
+    SKSpriteNode* text1Node = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/text_1.png"];
+    text1Node.xScale = text1Node.yScale = 0.3356* MAX([UIScreen mainScreen].bounds.size.height,[UIScreen mainScreen].bounds.size.width) / text1Node.size.width ;
+    CGPoint position2;
+    position2.x = position.x;
+    position2.y = MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) * 0.77;
+    text1Node.position = position2;
+    text1Node.alpha = 0;
+    [guessContainerNode_ addChild:text1Node];
+    text1Node.zPosition = 1;
+    [text1Node runAction:[SKAction fadeAlphaTo:1.0 duration:duration*0.5]];
     
 }
 
