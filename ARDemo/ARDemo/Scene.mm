@@ -549,7 +549,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         index ++;
         if (hitNode == nil)
             return;
-    }while ([hitNode isKindOfClass:[SKLabelNode class])
+    }while ([hitNode isKindOfClass:[SKLabelNode class]]);
     
     if (hitNode == closeNode_ && currentTouchableNode_ == hitNode)
     {
