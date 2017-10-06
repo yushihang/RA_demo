@@ -73,8 +73,12 @@
     
     BOOL guessMode_;
     SKNode* guessContainerNode_;
+    SKNode* optionContainerNode_;
     
     matrix_float4x4 cameraFrameTransform_;
+    
+    float answerNodeWidth_;
+    float answerNodePositionX_;
 }
 @end
 
@@ -122,11 +126,11 @@
         
         distanceNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"ar_res/ui/distance_notify.png"];
         distanceNotifyNode_.xScale = distanceNotifyNode_.yScale = [UIScreen mainScreen].bounds.size.height * 0.1 / distanceNotifyNode_.size.height ;
-        distanceNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - distanceNotifyNode_.frame.size.height*0.75);
+        distanceNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - distanceNotifyNode_.frame.size.height*2.0);
         
         directionNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"ar_res/ui/direction_notify.png"];
         directionNotifyNode_.xScale = directionNotifyNode_.yScale = [UIScreen mainScreen].bounds.size.height * 0.1 / directionNotifyNode_.size.height ;
-        directionNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - directionNotifyNode_.frame.size.height*0.75);
+        directionNotifyNode_.position = distanceNotifyNode_.position;
         directionNotifyNode_.hidden = NO;
         
         titleNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"ar_res/ui/title_floor.png"];
@@ -164,6 +168,7 @@
         guessMode_ = NO;
         
         guessContainerNode_= nil;
+        optionContainerNode_ = nil;
         
         cameraFrameTransform_ = matrix_identity_float4x4;
         [self resetTrack];
@@ -442,14 +447,17 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         return;
     
     CGPoint location = [touch locationInNode:self];
-    
-    NSArray* hitNodes = [self nodesAtPoint:location];
-    if (hitNodes.count == 0)
-        return;
-    
-    SKNode* hitNode = hitNodes.firstObject;
-    if (hitNode == nil)
-        return;
+    NSArray* hitNodes = [self nodesAtPoint:location] ;
+    int index = 0;
+    SKNode* hitNode = nil;
+    do{
+        if (index >= hitNodes.count)
+            return;
+        hitNode = [hitNodes objectAtIndex:index];
+        index ++;
+        if (hitNode == nil)
+            return;
+    }while ([hitNode isKindOfClass:[SKLabelNode class]]);
     
     if ([hitNode isKindOfClass:[TouchableSpriteNode class]])
     {
@@ -457,42 +465,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         currentTouchableNode_ = (TouchableSpriteNode*)hitNode;
         [currentTouchableNode_ touchesBegan:touches withEvent:event];
     }
-    if (hitNode == closeNode_)
-    {
-        [UIAlertView showWithTitle:@"提示" message:@"需要退出么?" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
-            if (1 == buttonIndex)
-            {
-                exit(0);
-            }
-        }];
-        return;
-    }
-    if (guessMode_)
-    {
-        if ([hitNode.name hasPrefix:OPTION_NODE_NAME])
-        {
-            [self optionSelected:hitNode];
-            [guessContainerNode_ runAction:
-             [SKAction sequence:@[
-                                  [SKAction waitForDuration:2.0],
-                                  [SKAction runBlock:^{
-                 for (SKNode* node in guessContainerNode_.children)
-                 {
-                     [node runAction:[SKAction fadeOutWithDuration:0.5]];
-                 }
-             }],
-                                  [SKAction waitForDuration:1.0],
-                                  [SKAction runBlock:^{
-                 [guessContainerNode_ removeFromParent];
-                 guessContainerNode_ = nil;
-                 guessMode_ = NO;
-                 resetButton_.hidden = NO;
-             }],
-                                  ]]];
-        }
-        return;
-    }
-    
+
+
     
     
     if ([hitNode.name isEqualToString:RESET_BUTTON_NAME])
@@ -559,42 +533,150 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
 
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+
+    
+    UITouch* touch = [touches anyObject];
+    if (touch == nil)
+        return;
+    CGPoint location = [touch locationInNode:self];
+    NSArray* hitNodes = [self nodesAtPoint:location] ;
+    int index = 0;
+    SKNode* hitNode = nil;
+    do{
+        if (index >= hitNodes.count)
+            return;
+        hitNode = [hitNodes objectAtIndex:index];
+        index ++;
+        if (hitNode == nil)
+            return;
+    }while ([hitNode isKindOfClass:[SKLabelNode class])
+    
+    if (hitNode == closeNode_ && currentTouchableNode_ == hitNode)
+    {
+        [UIAlertView showWithTitle:@"提示" message:@"需要退出么?" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
+            if (1 == buttonIndex)
+            {
+                exit(0);
+            }
+        }];
+        return;
+    }
+    
+    if (guessMode_)
+    {
+        if (currentTouchableNode_ == hitNode && [hitNode.name hasPrefix:OPTION_NODE_NAME])
+        {
+            if ([self optionSelected:hitNode])
+                return;
+            
+            [guessContainerNode_ runAction:
+             [SKAction sequence:@[
+                                  [SKAction waitForDuration:2.0],
+                                  [SKAction runBlock:^{
+                 for (SKNode* node in optionContainerNode_.children)
+                 {
+                     [node removeAllActions];
+                     [node runAction:[SKAction fadeOutWithDuration:0.5]];
+                 }
+                 for (SKNode* node in guessContainerNode_.children)
+                 {
+                     if (node != optionContainerNode_)
+                     {
+                         [node removeAllActions];
+                         [node runAction:[SKAction fadeOutWithDuration:0.5]];
+                     }
+                 }
+             }],
+                                  [SKAction waitForDuration:1.0],
+                                  [SKAction runBlock:^{
+                 
+                 [guessContainerNode_ removeFromParent];
+                 guessContainerNode_ = nil;
+                 optionContainerNode_ = nil;
+                 guessMode_ = NO;
+                 resetButton_.hidden = NO;
+             }],
+                                  ]]];
+        }
+        return;
+    }
+    
+    
     [currentTouchableNode_ touchesEnded:touches withEvent:event];
     currentTouchableNode_ = nil;
 }
--(void)optionSelected:(SKNode*) hitNode
+-(BOOL)optionSelected:(SKNode*) hitNode
 {
     NSAssert([hitNode.name hasPrefix:OPTION_NODE_NAME], @"getGifIndexByNodeName data error");
     NSString* string = [hitNode.name substringFromIndex:OPTION_NODE_NAME.length];
-    int optionsIndex = string.intValue;
     BOOL success = NO;
-    if (optionsIndex == 1)
+    if ([string hasPrefix:CORRECT_ANSWER])
         success = YES;
     
-    SKSpriteNode* optionNode = (SKSpriteNode*)hitNode;
-    if (![optionNode isKindOfClass:[SKSpriteNode class]])
-        return;
     if (!success)
-        optionNode.texture = [SKTexture textureWithImageNamed:@"error.png"];
-    else
+        return NO;
+    
+    
+    for (SKSpriteNode* node in guessContainerNode_.children)
     {
-        for (SKSpriteNode* node in guessContainerNode_.children)
+        if ([node isKindOfClass:[SKSpriteNode class]] && [node.name hasPrefix:MY_NODE_NAME])
         {
-            if ([node isKindOfClass:[SKSpriteNode class]] && [node.name hasPrefix:MY_NODE_NAME])
-                node.colorBlendFactor = 0;
+            node.colorBlendFactor = 0;
+            [node removeAllChildren];
+            break;
         }
-        
-        optionNode.texture = [SKTexture textureWithImageNamed:@"success.png"];
     }
+    
+    string = [string substringFromIndex:CORRECT_ANSWER.length];
+    for (SKNode* node in optionContainerNode_.children)
+    {
+        [node runAction:[SKAction sequence:@[[SKAction fadeOutWithDuration:0.5],
+                             [SKAction removeFromParent]]]];
+    }
+    
+    //显示答对的ui
+    SKSpriteNode* chooseAnswerNode = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/floor1.png"];
+    chooseAnswerNode.yScale = chooseAnswerNode.xScale = answerNodeWidth_/chooseAnswerNode.size.width;
+    chooseAnswerNode.position = CGPointMake(answerNodePositionX_, [UIScreen mainScreen].bounds.size.height*0.5);
+    [optionContainerNode_ addChild:chooseAnswerNode];
+    chooseAnswerNode.alpha = 0;
+    [chooseAnswerNode runAction:[SKAction fadeInWithDuration:0.5]];
+    
+    //显示答对的名字
+    SKLabelNode* label = [SKLabelNode labelNodeWithText:string];
+    label.fontName = [UIFont boldSystemFontOfSize:20].fontName;
+    label.fontSize = chooseAnswerNode.frame.size.height*0.5;
+    label.fontColor = UIColor.whiteColor;
+    CGPoint p1 = chooseAnswerNode.position;
+    label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    p1.y += chooseAnswerNode.frame.size.height*0.1;
+    label.position = p1;
+    label.zPosition = chooseAnswerNode.zPosition + 1;
+    [optionContainerNode_ addChild:label];
+    label.alpha = 0;
+    [label runAction:[SKAction fadeInWithDuration:0.5]];
+    
+
+    //恭喜您 答对了
+    SKSpriteNode* text2Node = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/text_2.png"];
+    text2Node.yScale = text2Node.xScale = 0.2853*[UIScreen mainScreen].bounds.size.width/text2Node.size.width;
+    text2Node.position = CGPointMake(answerNodePositionX_, [UIScreen mainScreen].bounds.size.height*0.5 + chooseAnswerNode.frame.size.height*1.5+text2Node.frame.size.height*0.5);
+    [optionContainerNode_ addChild:text2Node];
+    text2Node.alpha = 0;
+    [text2Node runAction:[SKAction fadeInWithDuration:0.5]];
+    return YES;
+    
     
 }
 
 -(void)touchSuccess:(SKNode*) hitNode
 {
     [guessContainerNode_ removeFromParent];
+
     guessContainerNode_ = [SKNode node];
     [self addChild:guessContainerNode_];
-
+    optionContainerNode_ = [SKNode node];
+    [guessContainerNode_ addChild:optionContainerNode_];
     
     
     guessContainerNode_.zPosition = GUESS_Z_POS;
@@ -680,26 +762,28 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         toGuessNode.position = position;
         TouchableSpriteNode* optionNode1 = [TouchableSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/bt_1.png"];
         optionNode1.yScale = optionNode1.xScale = line1Node.frame.size.width*1.2/optionNode1.size.width;
-        float nodeHeight = optionNode1.frame.size.height;
+        float answerNodeHeight = optionNode1.frame.size.height;
         
-        float gap = nodeHeight* 0.3;
+        float gap = answerNodeHeight* 0.3;
         
         //请点击选择答案
         SKSpriteNode* chooseAnswerNode = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/floor1.png"];
         chooseAnswerNode.yScale = chooseAnswerNode.xScale = optionNode1.xScale;
-        chooseAnswerNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - optionNode1.frame.size.width*0.7, MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.5 + 2*gap+2*nodeHeight);
-        [guessContainerNode_ addChild:chooseAnswerNode];
+        chooseAnswerNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - optionNode1.frame.size.width*0.7, MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.5 + 2*gap+2*answerNodeHeight);
+        [optionContainerNode_ addChild:chooseAnswerNode];
+        answerNodeWidth_ = chooseAnswerNode.frame.size.width;
+        answerNodePositionX_ = chooseAnswerNode.position.x;
         
         SKLabelNode* label = [SKLabelNode labelNodeWithText:@"请点击选择答案"];
         label.fontName = [UIFont boldSystemFontOfSize:20].fontName;
-        label.fontSize = nodeHeight*0.5;
+        label.fontSize = answerNodeHeight*0.5;
         label.fontColor = UIColor.whiteColor;
         CGPoint p1 = chooseAnswerNode.position;
         label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-        p1.y += nodeHeight*0.1;
+        p1.y += answerNodeHeight*0.1;
         label.position = p1;
         label.zPosition = chooseAnswerNode.zPosition + 1;
-        [guessContainerNode_ addChild:label];
+        [optionContainerNode_ addChild:label];
         
 
         //寻找待选答案
@@ -720,15 +804,15 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         {
             TouchableSpriteNode* optionNode = [TouchableSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/bt_1.png"];
             optionNode.normalImage = @"ar_res/ui/bt_1.png";
-            optionNode.highlightImage = @"bt_1_highlight.png";
+            optionNode.highlightImage = @"ar_res/ui/bt_1_highlight.png";
             optionNode.yScale = optionNode.xScale = optionNode1.xScale;
             
             
 
             optionNode.position = CGPointMake(chooseAnswerNode.position.x,
-                                              chooseAnswerNode.position.y - gap*(i+1) - nodeHeight*(i+1));
+                                              chooseAnswerNode.position.y - gap*(i+1) - answerNodeHeight*(i+1));
             
-            [guessContainerNode_ addChild:optionNode];
+            [optionContainerNode_ addChild:optionNode];
             optionNode.name = [NSString stringWithFormat:@"%@%d", OPTION_NODE_NAME, i];
             
             optionNode.alpha = 0.f;
@@ -738,20 +822,26 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
             
             
             //显示待选答案
-            if (i == guessData.answerIndex)
-                optionNode.name = CORRECT_ANSWER;
+           
             
             if (i < guessData.guessAnswerStringArray.count)
             {
-                SKLabelNode* label = [SKLabelNode labelNodeWithText:[guessData.guessAnswerStringArray objectAtIndex:i]];
+                NSString* string = [guessData.guessAnswerStringArray objectAtIndex:i];
+                SKLabelNode* label = [SKLabelNode labelNodeWithText:string];
                 label.fontName = [UIFont boldSystemFontOfSize:20].fontName;
-                label.fontSize = nodeHeight*0.5;
+                label.fontSize = answerNodeHeight*0.5;
                 label.fontColor = UIColor.whiteColor;
+                label.userInteractionEnabled = NO;
                 label.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
                 CGPoint p1 = optionNode.position;
                 label.position = p1;
                 label.zPosition = optionNode.zPosition + 1;
-                [guessContainerNode_ addChild:label];
+                [optionContainerNode_ addChild:label];
+                
+                if (i == guessData.answerIndex)
+                {
+                    optionNode.name = [NSString stringWithFormat:@"%@%@%@", OPTION_NODE_NAME, CORRECT_ANSWER, string];
+                }
             }
             
 
