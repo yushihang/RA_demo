@@ -11,10 +11,7 @@
 		1819EE8F1F5CF72E001AE0D4 /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = 1819EE8C1F5CF72D001AE0D4 /* error.png */; };
 		1819EE901F5CF72E001AE0D4 /* success.png in Resources */ = {isa = PBXBuildFile; fileRef = 1819EE8D1F5CF72E001AE0D4 /* success.png */; };
 		1829CB2F1F5C04290099EF6B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1829CB2E1F5C04290099EF6B /* CoreMotion.framework */; };
-		1829CB301F5C07CE0099EF6B /* direction_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 1829CB2D1F5C03170099EF6B /* direction_notify.png */; };
-		18508A141F5B9EB0006C6C62 /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 18508A131F5B9EB0006C6C62 /* reset.png */; };
 		18508A171F5BA33D006C6C62 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */; };
-		18508A191F5BABE8006C6C62 /* distance_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 18508A181F5BABE8006C6C62 /* distance_notify.png */; };
 		18540D691F821BDF00A5B6DF /* ARData.m in Sources */ = {isa = PBXBuildFile; fileRef = 18540D681F821BDF00A5B6DF /* ARData.m */; };
 		186E183D1F5A601F008C1206 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 186E183C1F5A601F008C1206 /* AppDelegate.m */; };
 		186E18421F5A601F008C1206 /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 186E18411F5A601F008C1206 /* Scene.mm */; };
@@ -27,18 +24,16 @@
 		18C23A8D1F5AB73300242C57 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C23A8C1F5AB73300242C57 /* ARKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		18C23A8F1F5AB73E00242C57 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C23A8E1F5AB73E00242C57 /* SpriteKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		18E4B0281F81DEDE006A4971 /* ar_res in Resources */ = {isa = PBXBuildFile; fileRef = 18E4B0271F81DEDE006A4971 /* ar_res */; };
+		18F607C31F8733FE0012F497 /* TouchableSpriteNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F607C21F8733FE0012F497 /* TouchableSpriteNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1819EE8B1F5CF72D001AE0D4 /* options.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = options.png; sourceTree = "<group>"; };
 		1819EE8C1F5CF72D001AE0D4 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error.png; sourceTree = "<group>"; };
 		1819EE8D1F5CF72E001AE0D4 /* success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = success.png; sourceTree = "<group>"; };
-		1829CB2D1F5C03170099EF6B /* direction_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = direction_notify.png; path = ARDemo/direction_notify.png; sourceTree = SOURCE_ROOT; };
 		1829CB2E1F5C04290099EF6B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		18508A131F5B9EB0006C6C62 /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
 		18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
 		18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
-		18508A181F5BABE8006C6C62 /* distance_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = distance_notify.png; sourceTree = "<group>"; };
 		18540D671F821BDF00A5B6DF /* ARData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARData.h; sourceTree = "<group>"; };
 		18540D681F821BDF00A5B6DF /* ARData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARData.m; sourceTree = "<group>"; };
 		186E18381F5A601F008C1206 /* ARDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +52,8 @@
 		18C23A8C1F5AB73300242C57 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		18C23A8E1F5AB73E00242C57 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		18E4B0271F81DEDE006A4971 /* ar_res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ar_res; sourceTree = "<group>"; };
+		18F607C11F8733FE0012F497 /* TouchableSpriteNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchableSpriteNode.h; sourceTree = "<group>"; };
+		18F607C21F8733FE0012F497 /* TouchableSpriteNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TouchableSpriteNode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +95,8 @@
 				1819EE8C1F5CF72D001AE0D4 /* error.png */,
 				1819EE8B1F5CF72D001AE0D4 /* options.png */,
 				1819EE8D1F5CF72E001AE0D4 /* success.png */,
-				18508A181F5BABE8006C6C62 /* distance_notify.png */,
-				1829CB2D1F5C03170099EF6B /* direction_notify.png */,
 				18508A151F5BA33D006C6C62 /* UIAlertView+Blocks.h */,
 				18508A161F5BA33D006C6C62 /* UIAlertView+Blocks.m */,
-				18508A131F5B9EB0006C6C62 /* reset.png */,
 				186E183B1F5A601F008C1206 /* AppDelegate.h */,
 				186E183C1F5A601F008C1206 /* AppDelegate.m */,
 				18540D671F821BDF00A5B6DF /* ARData.h */,
@@ -116,6 +110,8 @@
 				186E184B1F5A601F008C1206 /* LaunchScreen.storyboard */,
 				186E184E1F5A601F008C1206 /* Info.plist */,
 				186E184F1F5A601F008C1206 /* main.m */,
+				18F607C11F8733FE0012F497 /* TouchableSpriteNode.h */,
+				18F607C21F8733FE0012F497 /* TouchableSpriteNode.m */,
 			);
 			path = ARDemo;
 			sourceTree = "<group>";
@@ -192,13 +188,10 @@
 				1819EE901F5CF72E001AE0D4 /* success.png in Resources */,
 				186E184D1F5A601F008C1206 /* LaunchScreen.storyboard in Resources */,
 				18E4B0281F81DEDE006A4971 /* ar_res in Resources */,
-				18508A191F5BABE8006C6C62 /* distance_notify.png in Resources */,
-				1829CB301F5C07CE0099EF6B /* direction_notify.png in Resources */,
 				1819EE8F1F5CF72E001AE0D4 /* error.png in Resources */,
 				186E184A1F5A601F008C1206 /* Assets.xcassets in Resources */,
 				1819EE8E1F5CF72E001AE0D4 /* options.png in Resources */,
 				186E18481F5A601F008C1206 /* Main.storyboard in Resources */,
-				18508A141F5B9EB0006C6C62 /* reset.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +207,7 @@
 				186E18421F5A601F008C1206 /* Scene.mm in Sources */,
 				18508A171F5BA33D006C6C62 /* UIAlertView+Blocks.m in Sources */,
 				186E18501F5A601F008C1206 /* main.m in Sources */,
+				18F607C31F8733FE0012F497 /* TouchableSpriteNode.m in Sources */,
 				186E183D1F5A601F008C1206 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
