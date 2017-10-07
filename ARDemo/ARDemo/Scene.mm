@@ -768,7 +768,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     if (![toGuessNode isKindOfClass:[SKSpriteNode class]])
         return;
     resetButton_.hidden = YES;
-    float duration = 0.8;
+    float duration = 0.6;
     //显示竖线分割图案
     SKSpriteNode* line1Node = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/line_1.png"];
     line1Node.xScale = line1Node.yScale =  MIN([UIScreen mainScreen].bounds.size.height,[UIScreen mainScreen].bounds.size.width)*0.8 / line1Node.size.height ;
