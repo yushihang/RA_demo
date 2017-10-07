@@ -20,6 +20,7 @@
 #define MY_NODE_NAME @"MY_NODE_NAME___"
 #define OPTION_NODE_NAME @"OPTION_NODE_NAME_3"
 #define CORRECT_ANSWER @"CORRECT_ANSWER___"
+#define BOX_NAME @"BOX_NAME___"
 #define GUESS_Z_POS (100)
 #define LABEL_Z_POS (1001)
 #define TOUCH_RATE (0.1) //0.4
@@ -431,8 +432,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     //translation.columns[3].z = -1.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
-    //transform = translation;
-    //translation.columns[3].z = -1.0;
+    transform = translation;
+    translation.columns[3].z = -1.0;
     // Create an anchor
     ARAnchor* anchor = [[ARAnchor alloc]initWithTransform:transform];
     
@@ -492,6 +493,18 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         [self touchSuccess:hitNode];
         return;
     }
+    if (guessMode_)
+    {
+        for (SKNode* node in hitNodes)
+        {
+            if ([node.name isEqualToString:BOX_NAME])
+            {
+                [self stopGuessMode];
+                return;
+            }
+        }
+    }
+
     
 
     /*
@@ -568,35 +581,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         {
             if ([self optionSelected:hitNode])
                 return;
-            
-            [guessContainerNode_ runAction:
-             [SKAction sequence:@[
-                                  [SKAction waitForDuration:2.0],
-                                  [SKAction runBlock:^{
-                 for (SKNode* node in optionContainerNode_.children)
-                 {
-                     [node removeAllActions];
-                     [node runAction:[SKAction fadeOutWithDuration:0.5]];
-                 }
-                 for (SKNode* node in guessContainerNode_.children)
-                 {
-                     if (node != optionContainerNode_)
-                     {
-                         [node removeAllActions];
-                         [node runAction:[SKAction fadeOutWithDuration:0.5]];
-                     }
-                 }
-             }],
-                                  [SKAction waitForDuration:1.0],
-                                  [SKAction runBlock:^{
-                 
-                 [guessContainerNode_ removeFromParent];
-                 guessContainerNode_ = nil;
-                 optionContainerNode_ = nil;
-                 guessMode_ = NO;
-                 resetButton_.hidden = NO;
-             }],
-                                  ]]];
+            [self stopGuessMode];
+ 
         }
         return;
     }
@@ -604,6 +590,40 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     
     [currentTouchableNode_ touchesEnded:touches withEvent:event];
     currentTouchableNode_ = nil;
+}
+
+-(void)stopGuessMode
+{
+    [guessContainerNode_ runAction:
+     [SKAction sequence:@[
+                          [SKAction runBlock:^{
+         for (SKNode* node in optionContainerNode_.children)
+         {
+             [node removeAllActions];
+             [node runAction:[SKAction fadeOutWithDuration:0.5]];
+         }
+         for (SKNode* node in guessContainerNode_.children)
+         {
+             if (node != optionContainerNode_)
+             {
+                 [node removeAllActions];
+                 [node runAction:[SKAction fadeOutWithDuration:0.5]];
+             }
+         }
+     }],
+                          [SKAction runBlock:^{
+          guessMode_ = NO;
+     }],
+                          [SKAction waitForDuration:1.0],
+                          [SKAction runBlock:^{
+         
+         [guessContainerNode_ removeFromParent];
+         guessContainerNode_ = nil;
+         optionContainerNode_ = nil;
+        
+         resetButton_.hidden = NO;
+     }],
+                          ]]];
 }
 -(BOOL)optionSelected:(SKNode*) hitNode
 {
@@ -664,6 +684,16 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     [optionContainerNode_ addChild:text2Node];
     text2Node.alpha = 0;
     [text2Node runAction:[SKAction fadeInWithDuration:0.5]];
+    
+    //显示宝箱
+    SKSpriteNode* boxNode = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/box.png"];
+    boxNode.yScale = boxNode.xScale = 0.15*[UIScreen mainScreen].bounds.size.width/boxNode.size.width;
+    boxNode.position = CGPointMake(answerNodePositionX_, [UIScreen mainScreen].bounds.size.height*0.5 - chooseAnswerNode.frame.size.height*1.0-boxNode.frame.size.height*0.5);
+    [optionContainerNode_ addChild:boxNode];
+    boxNode.alpha = 0;
+    [boxNode runAction:[SKAction fadeInWithDuration:0.5]];
+    boxNode.name = BOX_NAME;
+    
     return YES;
     
     
@@ -769,7 +799,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         //请点击选择答案
         SKSpriteNode* chooseAnswerNode = [SKSpriteNode spriteNodeWithImageNamed:@"ar_res/ui/floor1.png"];
         chooseAnswerNode.yScale = chooseAnswerNode.xScale = optionNode1.xScale;
-        chooseAnswerNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - optionNode1.frame.size.width*0.7, MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.5 + 2*gap+2*answerNodeHeight);
+        chooseAnswerNode.position = CGPointMake(MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) - optionNode1.frame.size.width*0.65, MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)*0.5 + 2*gap+2*answerNodeHeight);
         [optionContainerNode_ addChild:chooseAnswerNode];
         answerNodeWidth_ = chooseAnswerNode.frame.size.width;
         answerNodePositionX_ = chooseAnswerNode.position.x;

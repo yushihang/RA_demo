@@ -86,9 +86,6 @@
         self.totalFighterCount ++;
     }
     
-#ifdef DEBUG
-    self.totalFighterCount = 1;
-#endif
 }
 
 - (void)setFighterGuessInfo:(NSDictionary*)guessInfo;
