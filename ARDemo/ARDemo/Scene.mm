@@ -569,7 +569,7 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         [UIAlertView showWithTitle:@"提示" message:@"需要退出么?" cancelButtonTitle:@"取消" otherButtonTitles:@[@"确定"] tapBlock:^(UIAlertView * _Nonnull alertView, NSInteger buttonIndex) {
             if (1 == buttonIndex)
             {
-                exit(0);
+                [self finishAR];
             }
         }];
         return;
@@ -580,7 +580,10 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
         if (currentTouchableNode_ == hitNode && [hitNode.name hasPrefix:OPTION_NODE_NAME])
         {
             if ([self optionSelected:hitNode])
+            {
+                [self guessSuccess];
                 return;
+            }
             [self stopGuessMode];
  
         }
@@ -592,6 +595,19 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     currentTouchableNode_ = nil;
 }
 
+-(void)guessSuccess
+{
+    if ([ARData getInstance].remainGuessCount > 0)
+        [ARData getInstance].remainGuessCount --;
+    
+    [self updateLabels];
+    if ([ARData getInstance].remainGuessCount <= 0)
+        [self finishAR];
+}
+-(void)finishAR
+{
+    
+}
 -(void)stopGuessMode
 {
     [guessContainerNode_ runAction:
