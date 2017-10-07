@@ -431,8 +431,8 @@ NS_INLINE simd_float4x4 SCNMatrix4TosimdMat4(const SCNMatrix4& m) {
     //translation.columns[3].z = -1.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
-    transform = translation;
-    translation.columns[3].z = -1.0;
+    //transform = translation;
+    //translation.columns[3].z = -1.0;
     // Create an anchor
     ARAnchor* anchor = [[ARAnchor alloc]initWithTransform:transform];
     
